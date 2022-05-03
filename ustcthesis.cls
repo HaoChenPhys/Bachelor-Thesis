@@ -1678,6 +1678,9 @@
     name = professional@type@en,
   },
   department,
+  department* = {
+    name = department@en
+  },
   student-id = {
     name = student@id,
   },
@@ -1719,7 +1722,7 @@
   \else
     Supervisor:%
   \fi
-  \space\ustc@clist@use{\ustc@supervisor@en}{, }%
+  \space&\ustc@clist@use{\ustc@supervisor@en}{, }%
 }
 \newcommand\ustc@advisor@en@line{%
   \setcounter{ustc@count}{\ustc@clist@count{\ustc@advisor@en}}%
@@ -1790,8 +1793,10 @@
 
 % 定义一些常量。
 \ifustc@degree@doctor
-  \newcommand\ustc@thesis@name{博士学位论文}
-  \newcommand\ustc@thesis@name@en{A dissertation for doctor's degree}
+  % \newcommand\ustc@thesis@name{博士学位论文}
+  % \newcommand\ustc@thesis@name@en{A dissertation for doctor's degree}
+  \newcommand\ustc@thesis@name{学士学位论文}
+  \newcommand\ustc@thesis@name@en{A dissertation for bachelor's degree}
 \else
   \ifustc@degree@master
     \newcommand\ustc@thesis@name{硕士学位论文}
@@ -1896,7 +1901,9 @@
     {\fontsize{16bp}{31bp}\selectfont
       \begin{tabular}{@{}l@{\hspace{\ccwd}}l@{}}%
         \textsf{作者姓名：} & \ustc@author \\
-        \textsf{\ustc@speciality@name：} & \ustc@speciality \\
+        \textsf{院系：}& \ustc@department \\
+        % \textsf{\ustc@speciality@name：} & \ustc@speciality \\
+        \textsf{学号：}& \ustc@student@id \\
         \ifx\ustc@advisor\@empty
           \textsf{导师姓名：} & \ustc@supervisor@names \\
         \else
@@ -1947,15 +1954,17 @@
       \ustc@title@en\par}\par
     \vskip 1.6cm%
     {\fontsize{16bp}{30bp}\selectfont
-      \begin{tabular}{@{}l@{}}%
-        Author:        \ustc@author@en \\
-        Speciality:    \ustc@speciality@en \\
+      \begin{tabular}{@{}ll@{}}%
+        Author:        &\ustc@author@en \\
+        % Speciality:    \ustc@speciality@en \\
+        Department:    &\ustc@department@en \\
+        Student ID:    &\ustc@student@id \\
         \ustc@supervisor@en@line \\
         \ifx\ustc@advisor\@empty
         \else
           \ustc@advisor@en@line \\
         \fi
-        Finished time: \ustc@date@en
+        Finished time: &\ustc@date@en
       \end{tabular}\par}%
   \end{titlepage}%
   \ustc@reset@main@language
