@@ -1971,57 +1971,168 @@
 }
 
 % 本科生的封面
-\newcommand\ustc@title@page@bachelor{%
+% \newcommand\ustc@title@page@bachelor{%
+%   \begin{titlepage}%
+%     \ustc@pdfbookmark{Title page}%
+%     \centering
+%     \vspace*{0.8cm}%
+%     \includegraphics{figures/ustc-title-page-heading.pdf}%
+%     \vskip 4.3cm%
+%     \begingroup
+%       \bfseries\fontsize{15bp}{16bp}\selectfont
+%       \setlength\tabcolsep{\z@}%
+%       \setlength\arrayrulewidth{1.5pt}%
+%       \begin{tabular}{lp{140bp}lp{140bp}}
+%         题\quad 目 &
+%           \multirow[t]{2}{325bp}{%
+%             \centering\fontsize{15bp}{40bp}\selectfont
+%             \ustc@title
+%           } & & \\
+%         \cline{2-4}
+%         \noalign{\vskip 24bp}
+%         & & & \\
+%         \cline{2-4}
+%         \noalign{\vskip 24bp}
+%         英\quad 文 &
+%           \multirow[t]{3}{325bp}{%
+%             \centering\fontsize{15bp}{40bp}\selectfont
+%             \ustc@title@en
+%           } & & \\
+%         \cline{2-4}
+%         \noalign{\vskip 24bp}
+%         题\quad 目 & & & \\
+%         \cline{2-4}
+%         \noalign{\vskip 24bp}
+%         & & & \\
+%         \cline{2-4}
+%         \noalign{\vskip 24bp}
+%         院\quad 系 & \multirow[t]{1}{325bp}{\centering\ustc@department} & & \\
+%         \cline{2-4}
+%         \noalign{\vskip 24bp}
+%         姓\quad 名 & \multirow[t]{1}{140bp}{\centering\ustc@author} &
+%         学\quad 号 & \multirow[t]{1}{140bp}{\centering\ustc@student@id} \\
+%         \cline{2-2}
+%         \cline{4-4}
+%         \noalign{\vskip 24bp}
+%         导\quad 师 & \multirow[t]{1}{325bp}{\centering\ustc@supervisor@names} & & \\
+%         \cline{2-4}
+%         \noalign{\vskip 24bp}
+%         日\quad 期 & \multirow[t]{1}{325bp}{\centering\ustc@date@zh@small} & & \\
+%         \cline{2-4}
+%       \end{tabular}
+%     \endgroup
+%   \end{titlepage}%
+% }
+
+\newcommand\ustc@title@page@bachelor@zh{%
+  \ustcsetup{language=chinese}%
+  \begin{titlepage}%
+    \ustc@pdfbookmark{封面}%
+    \centering
+    \parbox[t][0.6cm][t]{\textwidth}{%
+      \raggedleft\fangsong\fontsize{14bp}{14bp}\selectfont
+      \null\ustc@secret@level\par}\par
+    \vskip 0.5cm%
+    \includegraphics[height=1.3cm]{figures/ustc-name.pdf}\par
+    \vskip 0.6cm%
+    {\sffamily\fontsize{56bp}{56bp}\selectfont
+      \ustc@thesis@name\par}%
+    \ifustc@degree@type@academic
+      \vskip 2.0cm%
+    \else
+      \vskip 0.8cm%
+      \begingroup
+        \fontsize{26bp}{26bp}\selectfont
+        \ifx\ustc@professional@type\@empty
+          \null
+        \else
+          \lishu （\ustc@professional@type ）%
+        \fi
+        \par
+      \endgroup
+      \vskip 1.0cm%
+    \fi
+    \ifustc@badge@color@blue
+      \textcolor{ustcblue}{%
+        \includegraphics[height=4.1cm]{figures/ustc-badge.pdf}}%
+    \else
+      \includegraphics[height=4.1cm]{figures/ustc-badge.pdf}%
+    \fi\par
+    \vskip 0.9cm%
+    \parbox[t][3.5cm][c]{\textwidth}{%
+      \centering\sffamily\bfseries\fontsize{26bp}{50bp}\selectfont
+      \ustc@title\par}\par
+    \vskip 0.6cm%
+    {\fontsize{16bp}{31bp}\selectfont
+      \begin{tabular}{@{}l@{\hspace{\ccwd}}l@{}}%
+        \textsf{作者姓名：} & \ustc@author \\
+        \textsf{院系：}& \ustc@department \\
+        % \textsf{\ustc@speciality@name：} & \ustc@speciality \\
+        \textsf{学号：}& \ustc@student@id \\
+        \ifx\ustc@advisor\@empty
+          \textsf{导师姓名：} & \ustc@supervisor@names \\
+        \else
+          \textsf{校内导师：} & \ustc@supervisor@names \\
+          \textsf{企业导师：} & \ustc@advisor@names \\
+        \fi
+        \textsf{完成时间：} & \ustc@date@zh@big
+      \end{tabular}\par}%
+  \end{titlepage}%
+  \ustc@reset@main@language
+}
+
+% 英文封面
+\newcommand\ustc@title@page@bachelor@en{%
+  \ustcsetup{language=english}%
   \begin{titlepage}%
     \ustc@pdfbookmark{Title page}%
     \centering
-    \vspace*{0.8cm}%
-    \includegraphics{figures/ustc-title-page-heading.pdf}%
-    \vskip 4.3cm%
-    \begingroup
-      \bfseries\fontsize{15bp}{16bp}\selectfont
-      \setlength\tabcolsep{\z@}%
-      \setlength\arrayrulewidth{1.5pt}%
-      \begin{tabular}{lp{140bp}lp{140bp}}
-        题\quad 目 &
-          \multirow[t]{2}{325bp}{%
-            \centering\fontsize{15bp}{40bp}\selectfont
-            \ustc@title
-          } & & \\
-        \cline{2-4}
-        \noalign{\vskip 24bp}
-        & & & \\
-        \cline{2-4}
-        \noalign{\vskip 24bp}
-        英\quad 文 &
-          \multirow[t]{3}{325bp}{%
-            \centering\fontsize{15bp}{40bp}\selectfont
-            \ustc@title@en
-          } & & \\
-        \cline{2-4}
-        \noalign{\vskip 24bp}
-        题\quad 目 & & & \\
-        \cline{2-4}
-        \noalign{\vskip 24bp}
-        & & & \\
-        \cline{2-4}
-        \noalign{\vskip 24bp}
-        院\quad 系 & \multirow[t]{1}{325bp}{\centering\ustc@department} & & \\
-        \cline{2-4}
-        \noalign{\vskip 24bp}
-        姓\quad 名 & \multirow[t]{1}{140bp}{\centering\ustc@author} &
-        学\quad 号 & \multirow[t]{1}{140bp}{\centering\ustc@student@id} \\
-        \cline{2-2}
-        \cline{4-4}
-        \noalign{\vskip 24bp}
-        导\quad 师 & \multirow[t]{1}{325bp}{\centering\ustc@supervisor@names} & & \\
-        \cline{2-4}
-        \noalign{\vskip 24bp}
-        日\quad 期 & \multirow[t]{1}{325bp}{\centering\ustc@date@zh@small} & & \\
-        \cline{2-4}
-      \end{tabular}
-    \endgroup
+    \parbox[t][0.4cm][t]{\textwidth}{%
+      \raggedleft\fontsize{14bp}{14bp}\selectfont
+      \null\ustc@secret@level@en\par}\par
+    \vskip 0.5cm%
+    {\sffamily\fontsize{20bp}{30bp}\selectfont
+      University of Science and Technology of China\par}%
+    {\sffamily\fontsize{26bp}{30bp}\selectfont
+      \ustc@thesis@name@en\par}%
+    \ifustc@degree@type@academic\else
+      \begingroup
+        \fontsize{16bp}{32bp}\selectfont
+        \ifx\ustc@professional@type@en\@empty
+          \null
+        \else
+          (\ustc@professional@type@en)
+        \fi
+        \par
+      \endgroup
+    \fi
+    \vskip 2.5cm%
+    \ifustc@badge@color@blue
+      \textcolor{ustcblue}{%
+        \includegraphics[height=4.5cm]{figures/ustc-badge.pdf}}%
+    \else
+      \includegraphics[height=4.5cm]{figures/ustc-badge.pdf}%
+    \fi\par
+    \vskip 0.5cm%
+    \parbox[t][4.5cm][c]{\textwidth}{%
+      \centering\sffamily\bfseries\fontsize{26bp}{30bp}\selectfont
+      \ustc@title@en\par}\par
+    \vskip 1.6cm%
+    {\fontsize{16bp}{30bp}\selectfont
+      \begin{tabular}{@{}ll@{}}%
+        Author:        &\ustc@author@en \\
+        % Speciality:    \ustc@speciality@en \\
+        Department:    &\ustc@department@en \\
+        Student ID:    &\ustc@student@id \\
+        \ustc@supervisor@en@line \\
+        \ifx\ustc@advisor\@empty
+        \else
+          \ustc@advisor@en@line \\
+        \fi
+        Finished time: &\ustc@date@en
+      \end{tabular}\par}%
   \end{titlepage}%
+  \ustc@reset@main@language
 }
 
 % 重新定义 \cs{maketitle}，调用 \cs{ustc@makezhtitle}, \cs{ustc@makeentitle}
@@ -2034,12 +2145,14 @@
     \ustc@title@page@graduate@zh
     \ustc@title@page@graduate@en
   \else
-    \ustc@title@page@bachelor
+    \ustc@title@page@bachelor@zh
+    \ustc@title@page@bachelor@en
   \fi
   \cleardoublepage
   \restoregeometry
   \pagestyle{plain}%
 }
+
 
 
 % \subsection{原创性声明}
