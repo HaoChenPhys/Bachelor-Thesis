@@ -1,5 +1,6 @@
-\chapter{Introduction}
+\chapter{Introduction}\label{chap:intro}
 
+\section{Random spanning forests}
 The random spanning forests is a particularly interesting model in statistical physics due to its special critical phenomena
 and close connections to other statistical models. It decsribes the set of spanning forests $\scrF$, i.e., acyclic spanning subgraphs, of the underlying
 lattice $G$ with each occupied edge of the forest weighted by $w$. The partition function of the model is written as
@@ -15,7 +16,7 @@ because of the geometrical constraint of the model. They also conjectured that t
 The random spanning forests can also be viewed as special case of the $q$-state Potts model \cite{Potts1952, Wu1982}, another prototypical model in the study of phase transitions and critical phenomena.
 At first, the $q$-state Potts model was proposed to describe ferromagnets on a crystalline lattice, and $q$ therefore takes integer values.
 In 1972, a seminal work by Fortuin and Kasteleyn \cite{Fortuin1972} showed that the Potts model could be mapped to the random cluster model, in which $q$ can be 
-generalized to any arbitrary complex number. In particular, as illustrated in Chap.~\ref{}, by taking the limit of $q\to 0$ appropriately,
+generalized to any arbitrary complex number. In particular, as illustrated in Chap.~\ref{chap:SPF}, by taking the limit of $q\to 0$ appropriately,
 the random cluster model recovers to the spanning forests.
 
 The theoretical studies of the spanning-forest model started with the paper by Caracciolo \textit{et al.} \cite{Caracciolo2004}, in which they derived
@@ -29,7 +30,31 @@ obtained \cite{Roland2021Percolation} that a percolation transition is present f
 the model worth exploring. In the thesis, we focus on the finite-size scaling behaviors of the non-giant clusters at the supercritical phase.
 It has been proved that \cite{Luczak1992,Martin2018} when $G$ is a complete graph ($d=\infty$) and the system is at the supercritical phase, there are an unbounded number of clusters with sizes of the order of $|V|^{2/3}$ apart from the macroscopic component,
 where $|V|$ is the system size. Remarkably, the scale of clusters at criticality, in this case, is also $|V|^{2/3}$. In other words, the supercritical
-phase without the largest component looks like criticality. Our goal is to examine whether this phenomenon happens at finite dimensions, in particular, $d=3$.
+phase without the largest component looks like criticality. Our goal is to numerically examine whether this phenomenon happens at finite dimensions, in particular, $d=3$.
+
+\section{Monte Carlo methods}
+We use Monte Carlo methods to study the spanning-forest model. These methods play a very important role in statistical physics by
+providing a way to extract statistical properties from high dimensional configuration space. To be more specific, in statistical
+physics, we are usually interested in the ensemble average of various observables of system of equilibrium, which is governed by a probability distribution $\pi$ over the configuration space $\scrS$ of the system. 
+For example,  the ensemble average of observable $f(x)$ (as a function of state $x$) is defined by
+\begin{equation}
+	\langle f \rangle = \sum_{x \in \scrS} f(x) \pi(x).
+\end{equation}
+Typically, the state space $\scrS$ is extremely large such that directly computing the weighted average by enumerating all possible states is impractical.
+The central idea of Monte Carlo simulations is to circumvent this difficulty by importance sampling, i.e., designing a Markov process to directly sample state from the distribution
+$\pi$, and then compute the unweighted average as the estimated value of the ensemble average, i.e.,
+\begin{equation}
+	\bar{f} = \frac{1}{N}\sum_{i=1}^N f(x_i) \approx \langle f \rangle,
+\end{equation}
+where the number of sampling steps $N$ can be much smaller than the dimension of the state space $\scrS$. 
+Moreover, one can also determine the uncertainties of the estimate by various techniques like binning method.
+We will elaborate on the algorithm and data structure used to simulate the spanning forests in Chap.~\ref{chap:Algo}.
+
+\section{Plan of the thesis}
+The thesis is organized as follows. In Chap.~\ref{chap:SPF}, we eclucidate the relation between the random spanning forests and
+Potts model and derive the corresponding fermionic representation. Then we summarize the analytical results in Ref.~\inlinecite{Roland2021Hyperbolic,Roland2021Percolation}.
+The Monte Carlo algorithm and data structure implemented in this work is covered in Chap.~\ref{chap:Algo}. In Chap.~\ref{chap:results}, we analyze the simulation results, and a conclusion is given in Chap.~\ref{chap:conclusion}.
+
 
 % --------- for chapter 2 -----------------
 % which has the following partition function
