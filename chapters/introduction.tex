@@ -33,26 +33,46 @@ where $|V|$ is the system size. Remarkably, the scale of clusters at criticality
 phase without the largest component looks like criticality. Our goal is to numerically examine whether this phenomenon happens at finite dimensions, in particular, $d=3$.
 
 \section{Monte Carlo methods}
-We use Monte Carlo methods to study the spanning-forest model. These methods play a very important role in statistical physics by
+We use Monte Carlo methods to study the spanning-forest model. This type of methods plays a very important role in statistical physics by
 providing a way to extract statistical properties from high dimensional configuration space. To be more specific, in statistical
 physics, we are usually interested in the ensemble average of various observables of system of equilibrium, which is governed by a probability distribution $\pi$ over the configuration space $\scrS$ of the system. 
-For example,  the ensemble average of observable $f(x)$ (as a function of state $x$) is defined by
-\begin{equation}
+For observable $f(x)$ (as a function of state $x$), its ensemble average is defined as
+\begin{equation}\label{eq:weighted_ave}
 	\langle f \rangle = \sum_{x \in \scrS} f(x) \pi(x).
 \end{equation}
-Typically, the state space $\scrS$ is extremely large such that directly computing the weighted average by enumerating all possible states is impractical.
-The central idea of Monte Carlo simulations is to circumvent this difficulty by importance sampling, i.e., designing a Markov process to directly sample state from the distribution
+Typically, the state space $\scrS$ is exponentially large, which makes the computation of Eq.~\eqref{eq:weighted_ave} by enumerating all possible states impractical.
+Taking the Ising model as an example, for a system with total of $N$ spins, the total number of spin configurations grows exponentially as $2^N$.
+Unless there exists an analytic formula for $\langle f \rangle$, the computational resource required to compute $\langle f \rangle$ 
+using Eq.~\eqref{eq:weighted_ave} grows exponentially with $N$.
+
+The central idea of Monte Carlo simulations is to circumvent this difficulty by importance sampling, i.e., directly sampling states from the distribution
 $\pi$, and then compute the unweighted average as the estimated value of the ensemble average, i.e.,
 \begin{equation}
-	\bar{f} = \frac{1}{N}\sum_{i=1}^N f(x_i) \approx \langle f \rangle,
+	\bar{f} = \frac{1}{n}\sum_{i=1}^n f(X_i) \approx \langle f \rangle,
 \end{equation}
-where the number of sampling steps $N$ can be much smaller than the dimension of the state space $\scrS$. 
-Moreover, one can also determine the uncertainties of the estimate by various techniques like binning method.
-We will elaborate on the algorithm and data structure used to simulate the spanning forests in Chap.~\ref{chap:Algo}.
+where $X_i$ is the configuration at sampling step $i$, and $n$ is the number of sampling steps. In practice, one can get a decent estimate of $\langle f \rangle $ with $n$ much smaller
+than the dimension of the state space $\scrS$. The reason is that this procedure takes account of those most `important' configurations,
+i.e., configurations with large statistical weights, and ignores those that have negligible contributions on $\langle f \rangle$.
+
+In order to simulate the distribution $\pi$, Monte Carlo methods construct a Markov chain $\scrM$ with transition probability matrix 
+$P = \{p_{xy}\}_{x, y\in \scrS} = \{\mathbb{P}(X_{t+1} = y|X_{t} = x)\}_{x, y\in \scrS}$ satisfying the following conditions:
+\begin{enumerate}[label=(\alph*)]
+	\item The distribution $\pi$ is the stationary distribution of $\scrM$, i.e.,  $\sum_x \pi_x p_{xy} = \pi_y$ for all $y\in \scrS$.
+	\item The Markov chain $\scrM$ is ergodic, i.e., there exists a positive integer $t_0$, such that for all paris $x, y \in \scrS$, 
+	$\mathbb{P}(X_t = y|X_0 = x) > 0$ for $t > t_0$.
+\end{enumerate}
+Condition (b) ensures that it's possible to sample any state in $\scrS$ in a Markov chain staring from arbitrary state.
+One common way to obtain a transition probability $p_{xy}$ satisfying condition (a) is by further imposing the detailed balance condition
+\begin{equation}
+	\pi_x p_{xy} = \pi_y p_{yx}, \quad \forall x, y \in S, x\neq y.
+\end{equation}
+
+The content we present above only gives a rough idea of the Monte Carlo methods. For a more detailed description, please see, e.g., Ref.~\inlinecite{Sokal1997, Landau2014, Binder2010} and references therein.
+In Chap.~\ref{chap:Algo}, we will elaborate on a specific Monte Carlo algorithm for simulating the spanning forests.
 
 \section{Plan of the thesis}
 The thesis is organized as follows. In Chap.~\ref{chap:SPF}, we eclucidate the relation between the random spanning forests and
-Potts model and derive the corresponding fermionic representation. Then we summarize the analytical results in Ref.~\inlinecite{Roland2021Hyperbolic,Roland2021Percolation}.
+Potts model and derive the corresponding fermionic representation. Thereafter we summarize the analytical results from Ref.~\inlinecite{Roland2021Hyperbolic,Roland2021Percolation}.
 The Monte Carlo algorithm and data structure implemented in this work is covered in Chap.~\ref{chap:Algo}. In Chap.~\ref{chap:results}, we analyze the simulation results, and a conclusion is given in Chap.~\ref{chap:conclusion}.
 
 
