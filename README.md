@@ -3,16 +3,25 @@
 ## Outline
 - [ ] **Introduction**
    - [ ] Spanning-forest model
+
    - [ ] Monte Carlo methods
+
    - [ ] Plan of the work
+
 - [ ] **The Spanning-forest model**
-   - [ ] Connection to Potts mdeol
+   - [ ] Connection to Potts model
+
    - [ ] Fermionic Representations
+
    - [ ] Questions we want to solve
+
 - [ ] **Algorithm and data structure**
    - [ ] Sweeny Algorithm
+
    - [ ] Link-cut tree
+
 - [ ] **Results**
+
 - [ ] **Conclusion**
 
 
