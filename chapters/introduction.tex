@@ -5,32 +5,32 @@ The random spanning forests is a particularly interesting model in statistical p
 and close connections to other statistical models. It decsribes the set of spanning forests $\scrF$, i.e., acyclic spanning subgraphs, of the underlying
 lattice $G$ with each occupied edge of the forest weighted by $w$. The partition function of the model is written as
 \begin{equation}\label{eq:SPF_partition}
-	\scrZ = \sum_{F \in \scrF} w^{|F|},
+	\scrZ = \sum_{F \in \scrF} w^{\eta(F)},
 \end{equation}
-where $|F|$ counts the number of occupied edges in $F$.
+where $\eta(F)$ counts the number of occupied edges in $F$.
 
 The model is reminiscent of the famous model of bond percolation, where each bond is occupied independently with probability $p$ and do not need to form a forest.
 In percolation, it's well known that for dimension $d \geq 2$, there exists a critical point $0 < p_c < 1$ such that there is a unique giant cluster whose size is of the order of the system volume
-at the supercritical phase $p > p_c$. In contrast, Roland \textit{et al.} \cite{Roland2021Percolation} have shown that the percolation of spanning forests happens only for $d \geq 3$ 
+at the supercritical phase $p > p_c$. In contrast, Roland et al. \cite{Roland2021Percolation} have shown that the percolation of spanning forests happens only for $d \geq 3$ 
 because of the geometrical constraint of the model. They also conjectured that the supercritical phase of the spanning-forest model is more interesting in terms of the scaling behaviors of non-giant clusters (trees). 
 The random spanning forests can also be viewed as special case of the $q$-state Potts model \cite{Potts1952, Wu1982}, another prototypical model in the study of phase transitions and critical phenomena.
-At first, the $q$-state Potts model was proposed to describe ferromagnets on a crystalline lattice, and $q$ therefore takes integer values.
-In 1972, a seminal work by Fortuin and Kasteleyn \cite{Fortuin1972} showed that the Potts model could be mapped to the random cluster model, in which $q$ can be 
-generalized to any arbitrary complex number. In particular, as illustrated in Chap.~\ref{chap:SPF}, by taking the limit of $q\to 0$ appropriately,
-the random cluster model recovers to the spanning forests.
+At first, the $q$-state Potts model was proposed to describe ferromagnets on a crystalline lattice, and $q$ correspondingly takes integer values.
+In 1972, a seminal work by Fortuin and Kasteleyn \cite{Fortuin1972} showed that the Potts model could be mapped to the random-cluster model, in which $q$ can be 
+generalized to real numbers. In particular, as illustrated in Chap.~\ref{chap:SPF}, by taking the limit of $q\to 0$ appropriately,
+the random-cluster model recovers to the spanning forests.
 
-The theoretical studies of the spanning-forest model started with the paper by Caracciolo \textit{et al.} \cite{Caracciolo2004}, in which they derived
+The theoretical studies of the spanning-forest model started with the paper by Caracciolo et al. \cite{Caracciolo2004}, in which they derived
 an equivalent fermionic theory and showed that the theory could further be mapped onto a non-linear sigma model taking vales in the unit supersphere
 $\mathbb{R}^{1|2}$ ($\text{OSp}(1|2)$-invariant sigma model) to all orders in perturbation theory. 
-Later, Deng \textit{et al.}\cite{Deng2007} presented Monte Carlo simulations of the model in spatial dimensions $d = 3, 4, 5$ and demonstrated that, for each case, there is a second-order phase transition at a finite weight
+Later, Deng et al.\cite{Deng2007} presented Monte Carlo simulations of the model in spatial dimensions $d = 3, 4, 5$ and demonstrated that, for each case, there is a second-order phase transition at a finite weight
 $w_c$. They further conjectured that the upper critical dimension is $d=6$. Recently, the authors in Ref.~\inlinecite{Roland2021Hyperbolic} extended the results
-of Caracciolo \textit{et al.} and reinterpreted the fermionic theory as a non-linear sigma model with hyperbolic target space $\mathbb{H}^{0|2}$, based on which
+of Caracciolo et al. and reinterpreted the fermionic theory as a non-linear sigma model with hyperbolic target space $\mathbb{H}^{0|2}$, based on which
 they proved that there is no phase transition in two dimensions using a Mermin–Wagner argument. With this formulation, they further
 obtained \cite{Roland2021Percolation} that a percolation transition is present for $d \geq 3$, consistent with the previous numerics. Despite these developments, there remain several aspects of
 the model worth exploring. In the thesis, we focus on the finite-size scaling behaviors of the non-giant clusters at the supercritical phase.
 It has been proved that \cite{Luczak1992,Martin2018} when $G$ is a complete graph ($d=\infty$) and the system is at the supercritical phase, there are an unbounded number of clusters with sizes of the order of $|V|^{2/3}$ apart from the macroscopic component,
 where $|V|$ is the system size. Remarkably, the scale of clusters at criticality, in this case, is also $|V|^{2/3}$. In other words, the supercritical
-phase without the largest component looks like criticality. Our goal is to numerically examine whether this phenomenon happens at finite dimensions, in particular, $d=3$.
+phase without the largest component looks like criticality. Our goal is to explore this phenomenon at finite dimensions, in particular $d=3$, using numerical methods.
 
 \section{Monte Carlo methods}
 We use Monte Carlo methods to study the spanning-forest model. This type of methods plays a very important role in statistical physics by
@@ -76,15 +76,3 @@ Potts model and derive the corresponding fermionic representation. Thereafter we
 The Monte Carlo algorithm and data structure implemented in this work is covered in Chap.~\ref{chap:Algo}. In Chap.~\ref{chap:results}, we analyze the simulation results, and a conclusion is given in Chap.~\ref{chap:conclusion}.
 
 
-% --------- for chapter 2 -----------------
-% which has the following partition function
-% \begin{equation}\label{eq:RC_partition}
-% 	\scrZ_{\textsc{SC}}	 = \sum_{\omega} q^{C(\omega)} p^{|\omega|}(1-p)^{|G| - |\omega|},
-% \end{equation}
-% where $\sum_\omega$ sums over all spanning subgraphs of the underlying lattice $G$, $C(\omega)$ denotes the number of connected
-% components in $\omega$, and $p$ is a parameter related to the nearest-neighbor coupling in the original $q$-state Potts model.
-% For $q $
-
-
-% defined on a graph $G$ is a statistical model that desrcribes the set of 
-% (unrooted) acylic spanning subgraphs of $G$, with each occupied edge has weight $w$.

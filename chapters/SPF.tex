@@ -1,1 +1,326 @@
 \chapter{The spanning-forest model}\label{chap:SPF}
+
+\section{Potts model and spanning forests}
+In this section, we will explain how the spanning-forest model arises in the $q\to 0$ limit of the $q$-state Potts model.
+Given a finite lattice $G = (V, E)$, the $q$-state Potts model is defined as follows: for each site $i\in V$, the spin 
+$\sigma_i$ takes values from $\{0, \dots, q-1\}$, and the Hamiltonian for spin configuration $\sigma \in \Sigma = \{0,\dots, q-1\}^{|V|}$
+is written as
+\begin{equation}\label{eq:Potts_H}
+	\scrH(\sigma) = -\sum_{\langle ij \rangle \in E}J \delta_{\sigma_i, \sigma_j},
+\end{equation}
+where $J>0$ is the ferromagnetic coupling constant. For convenience, we set $J = q$ in the following discussion.
+% Let $\Sigma = \{0,\dots, q-1\}^{|V|}$ denote the spin configuration space on $G$.
+The corresponding probability measure of the model is then defined by 
+\begin{equation}
+	\pi_{\text{Potts}}(\sigma) = \frac{1}{\scrZ_{\text{Potts}}} e^{\beta H(\sigma)}, \quad  \text{for} \ \sigma \in \Sigma,
+\end{equation}
+where $\scrZ_{\text{Potts}}$ is the partition function of the Potts model
+\begin{equation}
+	\scrZ_{\text{Potts}} = \sum_{\sigma\in \Sigma} \prod_{\langle ij \rangle \in E} \exp(\beta q\delta_{\sigma_i, \sigma_j}).
+\end{equation}
+
+While $q$ is assumed to be an integer greater than 1 in the above definition, 
+Fortuin and Kasteleyn \cite{Fortuin1972} pointed out that it can be extended to any real number by reformulating the Potts model into another model, 
+called the random-cluster model. Here we derive this result following the approach by Edwards and Sokal\cite{Edwards1988}.
+They introduced the joint probability measure on the direct product of the spin configuration space $\Sigma$ and the bond configuration
+space $\Omega = \{0, 1\}^{|E|}$:
+\begin{equation}\label{eq:joint_measure}
+	\mu(\sigma, \omega)	= \frac{1}{\scrZ_{\text{joint}}} \prod_{e=\langle ij \rangle \in E} \left[(1-p)\delta_{\omega_e, 0} + p\delta_{\omega_e, 1}\delta_{\sigma_i, \sigma_j}\right],
+	\quad \text{for}\ (\sigma, \omega) \in \Sigma\times\Omega,
+\end{equation}
+where $\scrZ_{\text{joint}}$ is the partition function for the joint distribution
+\begin{equation}
+	\scrZ_{\text{joint}} = \sum_{\sigma\in \Sigma, \omega \in \Omega} \prod_{e=\langle ij \rangle \in E} \left[(1-p)\delta_{\omega_e, 0} + p\delta_{\omega_e, 1}\delta_{\sigma_i, \sigma_j}\right].
+\end{equation}
+
+The probability measure of the Potts model can be recovered by calculating the marginal distribution of $\sigma$ and setting $p = 1-e^{-\beta q}$:
+\begin{equation}
+	\begin{aligned}
+	\mu_{\text{margin}}(\sigma) &= \sum_{\omega \in \Omega} \mu(\sigma, \omega) = \frac{1}{\scrZ_{\text{joint}}} \prod_{e=\langle ij \rangle \in E}\left[\sum_{\omega_e = 0}^1 \left((1-p)\delta_{\omega_e, 0} + p\delta_{\omega_e, 1}\delta_{\sigma_i, \sigma_j}\right)\right]\\
+	&= \frac{1}{\scrZ_{\text{joint}}} \prod_{e=\langle ij \rangle \in E}\left[(1-p) + p\delta_{\sigma_i, \sigma_j}\right]\\
+	&= \frac{1}{\scrZ_{\text{joint}}} \prod_{e=\langle ij \rangle \in E}e^{-\beta q} e^{\beta q\delta_{\sigma_i, \sigma_j}} 
+	\propto e^{\beta q\sum_{\langle ij \rangle \in E}\delta_{\sigma_i, \sigma_j}} \propto \pi_{\text{Potts}}(\sigma).\\
+	\end{aligned}
+\end{equation}
+Since both $\mu_{\text{margin}}(\sigma)$ and $\pi_{\text{Potts}}(\sigma)$ are normalized, we obtain $\mu_{\text{margin}}(\sigma) = \pi_{\text{Potts}}(\sigma)$,
+and the partition functions are therefore related as
+\begin{equation}\label{eq:Z_relation}
+	\scrZ_{\text{joint}} = e^{-\beta q |E|} \scrZ_{\text{Potts}}.
+\end{equation}
+On the other hand, we can calculate the marginal measure of $\omega$ as
+\begin{equation}\label{eq:RC_measure}
+	\begin{aligned}
+	\mu_{\text{margin}}(\omega) &= \sum_{\sigma \in \Sigma} \mu(\sigma, \omega)
+	= \frac{1}{\scrZ_{\text{joint}}} q^{k(\omega)}\prod_{e=\langle ij \rangle \in E}\left[(1-p)\delta_{\omega_e, 0} + p\delta_{\omega_e, 1}\right],
+	\end{aligned}
+\end{equation}
+where $k(\omega)$ is the number of connected components in $\omega$. In the above derivation, we use the fact that $\mu(\sigma, \omega) = 0$ if there exists an occupied edge $e = \langle ij \rangle$, i.e., $\omega_e = 1$,
+such that its neighboring spins satisfy $\sigma_i \neq \sigma_j$. As a result, 
+% in the summation $\sum_{\sigma\in \Sigma} \mu(\sigma, \omega)$,
+only configurations having spins being in the same state for each connected component of $\omega$ gives non-zero contributions to $\sum_{\sigma\in \Sigma} \mu(\sigma, \omega)$ in Eq.~\eqref{eq:RC_measure}.
+Moreover, because there are $q$ possible configurations (taking one of the $q$ values) for each connected component, the summation of $\sigma$ gives the extra factor $q^{k(\omega)}$. 
+Equation~\eqref{eq:RC_measure} is exactly the probability measure $\pi_{\text{RC}}(\omega)$ for the random-cluster model with $\scrZ_{\text{RC}} = \scrZ_{\text{joint}}$.
+Combining with Eq.~\eqref{eq:Z_relation}, we have $\scrZ_{\text{RC}} = e^{-\beta q|E|} \scrZ_{\text{Potts}}$. Hence, the random-cluster model
+provides an equivalent representation of the $q$-state Potts model (with $p = 1-e^{-\beta q}$), which generalizes $q$ to real values. 
+
+Besides the connection between the partition functions, a more interesting relation is between the two-point correlations in the Potts model
+and the two-point connectivity in the random-cluster model\cite{Grimmett2006}. To state the result, we first rewrite the Hamiltonian Eq.~\eqref{eq:Potts_H} in
+terms of the $(q-1)$-dimensional Potts spin vectors $u_i \in \mathbb{R}^{q-1}$, which satisfies 
+\begin{equation}
+	u_i \cdot u_j = q\delta_{\sigma_i, \sigma_j} - 1.
+\end{equation}
+The two-point correlation function in the Potts model is defined as 
+\begin{equation}
+	\langle u_x \cdot u_y \rangle_{\text{Potts}} = \frac{1}{\scrZ_{\text{Potts}}} \sum_{\{u\}}u_x \cdot u_y 
+	\exp\left[\beta \sum_{\langle ij \rangle \in E} (u_i\cdot u_j  + 1) \right], \quad \forall x, y\in V.
+\end{equation}
+Then the result states 
+\begin{equation}\label{eq:Potts_RC_corr}
+	\frac{1}{q-1}\langle u_x \cdot u_y \rangle_{\text{Potts}} = \mathbb{P}_{\text{RC}}[x \leftrightarrow y],
+\end{equation}
+where $\mathbb{P}_{\text{RC}}[x\leftrightarrow y]$ is the connectivity probability between sites $x$ and $y$, i.e., the
+probability that $x$ and $y$ are in the same components. Using Eq.~\eqref{eq:Potts_RC_corr}, information about the percolation
+of the random-cluster model can be understood from the perspective of the long-range ordering of the Potts model.
+The equivalence between the two systems has facilitated the study of both models, and we refer to Ref.~\inlinecite{Grimmett2006} for a complete discussion.
+
+Now let's consider the limit of $q\to 0$ of Eq.~\eqref{eq:RC_measure}. The measure $\pi_{\text{RC}}$ can be rewritten as
+\begin{equation}
+	\begin{aligned}
+	\pi_{\text{RC}}(\omega) &= (1-p)^{|E|}(\frac{p}{1-p})^{\eta(\omega)}q^{k(\omega)}\Bigg/\left[(1-p)^{|E|}\sum_{\omega \in \Omega}(\frac{p}{1-p})^{\eta(\omega)}q^{k(\omega)}\right]\\
+	&= (\frac{p}{1-p})^{\eta(\omega)}q^{k(\omega)}\Bigg/\left[\sum_{\omega \in \Omega}(\frac{p}{1-p})^{\eta(\omega)}q^{k(\omega)}\right],\\
+	\end{aligned}
+\end{equation}
+where $\eta(\omega)$ denotes the number of occupied edges. We further require that $p$ approaches 0 at the same rate as does $q$, i.e., $p = w q \to 0$, which simplifies $\pi_{\text{RC}}(\omega)$ to
+\begin{equation}
+	\pi_{\text{RC}}(\omega) = w^{\eta(\omega)}q^{\eta(\omega) + k(\omega)}\Bigg/\left[\sum_{\omega \in \Omega}w^{\eta(\omega)}q^{\eta(\omega) + k(\omega)}\right], \quad q \to 0.
+\end{equation}
+Since we have $\eta(\omega) + k(\omega) \geq |V|$, it follows that $\pi_{\text{RC}}(\omega)$ is only non-zero
+when the equality holds, which selects out the spanning forests:
+\begin{equation}
+	\pi_{\text{RC}}(\omega) =
+	\begin{cases}
+	 w^{\eta(\omega)}/\sum_{\omega \in \scrF}w^{\eta(\omega)}, &\text{if}\ \omega \in \scrF, \\
+	 0 &\text{otherwise}.
+	\end{cases}
+\end{equation}
+Therefore, the model of spanning forests can be viewed as the special case of the Pott/random-cluster model with 
+$q \to 0$ while keeping the ratio $w = p/q$ finite. 
+
+\section{Grassmann variable}
+To explore the critical behavior of this geometrical model, it is more convenient to work on its fermionic representation \cite{Caracciolo2004}, 
+which allows a field-theoretic approach. For completeness, we shall first introduce the Grassman variable, which is the central object
+of fermionic theories. 
+
+A Grassmann algebra describes anticommuting objects, which is defined by a set of generators $\{\p_1, \dots,\p_n\}$ satisfying
+\begin{equation}
+	\{\psi_i, \psi_j\} = \p_i \p_j + \p_j \p_i = 0.
+\end{equation}	
+The anticommutativity of generators implies that they are nilpotent, i.e., $\psi_i^2 = 0$. Correspondingly, elements of the
+Grassman algebra can be expressed as a polynomial of the first order in generators
+\begin{equation}
+    f(\psi_1, \cdots, \psi_n) = c_0 + \sum_{k=1}^{n}\sum_{i_1,\cdots,i_k = 1}^{n} c_{i_1,\cdots,i_k} \psi_{i_1}\cdots\psi_{i_k},
+\end{equation}
+where coefficients $c_{i_1, \cdots, i_k}$ are complex, and we assume $i_1 < \cdots < i_k$. Note that the ordering is important since interchanging generators gives an extra sign. 
+The left derivative $\partial/\partial \psi_i$ of the generator $\psi_j$ is defined by
+\begin{equation}
+	\frac{\partial}{\partial \p_i} \p_j = \delta_{i, j}.
+\end{equation}
+By requiring it to be a linear operator as the ordinary case, the operator extends to any element of the algebra. For example,
+for a function $f(\psi_1, \psi_2)$, its (left) derivative with respect to $\p_2$ is
+\begin{equation}
+	\begin{aligned}
+	\frac{\partial}{\partial \p_2} f(\p_1, \p_2) &= \frac{\partial}{\partial \p_2} (c_0 + c_1 \p_1 + c_2 \p_2 + c_{12} \p_1 \p_2) \\
+	&= c_2 - c_{12}\frac{\partial}{\partial\p_2}(\p_2 \p_1) = c_2 - c_{12}\p_1.
+	\end{aligned}
+\end{equation}
+The differentiations also satisfy the anticommuatation relations $\{\partial_{\p_i}, \partial_{\p_j}\} = 0$.
+
+For Grassman variables, the integration is identified with the derivatives
+\begin{equation}\label{eq:integration}
+	\int d\psi_i f(\p) = \frac{\partial}{\partial \psi_i} f(\p), \quad
+	\int d\psi_i d\p_j f(\p) = \frac{\partial}{\partial \psi_i} \frac{\partial}{\partial \psi_j}f(\p),\quad \cdots
+\end{equation}
+Notice that Eq.~\eqref{eq:integration} implies that the rule for changing Grassmann variables in the integral is different from the ordinary case. 
+For $\psi_j^\prime = A_{ji}\psi_i$, we have
+\begin{equation}
+    \begin{aligned}
+    I &= \int d\psi_1\cdots d\psi_n f(\psi_1,\cdots,\psi_n) = \prod_{i=1}^n \frac{\partial}{\partial \psi_i} f(\psi_1,\cdots,\psi_n)\\
+    &= \prod_{i=1}^n (\frac{\partial \psi^\prime_j}{\partial \psi_i}\frac{\partial}{\partial \psi_j^\prime} )f(\psi_1,\cdots,\psi_n)
+    = \prod_{i=1}^n (A_{ji}\frac{\partial}{\partial \psi_j^\prime}) f(\psi_1,\cdots,\psi_n) \\
+	&= \sum_{P\in S_n} (-1)^P A_{1 P(1)}\cdots A_{n P(n)} \int d\psi^\prime_1\cdots d\psi^\prime_n f(\psi_1,\cdots,\psi_n)\\
+	&= \operatorname{det}A \int d\psi^\prime_1\cdots d\psi^\prime_n f(\psi_1,\cdots,\psi_n),
+    \end{aligned}
+\end{equation}
+where for ordinary numbers, the factor $\operatorname{det} A$ is replaced by $(\operatorname{det} A)^{-1}$.
+
+Now let's consider the Gaussian integrals of these Grassmann variables, which will be used to rewrite the
+matrix tree theorem. In the following, we will consider the case of $2n$ generators $\{\psi_1, \dots, \psi_n, \bar{\psi}_1, \dots, \bar{\psi}_n\}$, where $\bar{\psi}_i$ 
+and $\p_i$ are independent variables. The one-dimensional case is simple
+\begin{equation}
+    Z = \int d\p d\bar{\p}  e^{a\bar{\p} \p} = \int d\p d\bar{\p}(1+a\bar{\p}\p) = a,
+\end{equation}
+where $a$ is a complex number. The generalization to higher-dimensional case is
+\begin{equation}
+\begin{aligned}
+    Z &= \int \left(\prod_{i=1}^n d\p_i d\bar{\p}_i\right)  e^{\sum_{i,j}\bar{\p}_i A_{ij} \p_j} = \operatorname{det}A \int \left(\prod_{i=1}^n d\p_i^\prime d\bar{\p}_i\right) 
+    e^{\sum_i \bar{\p}_i\p_i^\prime}\\ 
+    &= \operatorname{det}A \prod_{i=1}^n \int d\p_i^\prime d\bar{\p}_i(1+\bar{\p}_i\p^\prime_i) = \operatorname{det}A.
+\end{aligned}
+\end{equation}
+In the derivation, we make a change of variables from $\p_i$ to $\p_i^\prime = \sum_j A_{ij} \p_j$, which introduces
+the factor $\operatorname{det}A$ and factorizes the integral. We can also evaluate the expectation values of monomials with
+respect to the Gaussian measure. By introducing the source terms and taking the corresponding derivatives,
+one can prove the following identity
+\begin{equation}\label{eq:Wick}
+	\int \left(\prod_{i=1}^{n} d\psi_i d\bar{\psi}_i\right) \bar{\psi}_{i_{1}} \psi_{j_{1}} \bar{\psi}_{i_{2}} \psi_{j_{2}} \cdots \bar{\psi}_{i_{k}} \psi_{j_{k}} 
+	e^{\sum_{i, j=1}^{n} \bar{\psi}_{i} A_{i j} \psi_{j}}=\epsilon(I|J) \operatorname{det} A(I|J),
+\end{equation}
+where $I = (i_1, \dots, i_k)$ and $J = (j_1, \dots, j_k)$. The sign $\epsilon(I|J) = (-1)^{\sum_{s=1}^k i_s - \sum_{s=1}^k j_s}$ arises from interchanging
+Grassmann numbers, and $A(I|J)$ is the submatrix of $A$ by removing rows $I$ and columns $J$. In particular, for the case of $I = J$, we have $\epsilon(I|J) = 1$,
+and $\operatorname{det} A(I|J)$ becomes a principal minor.
+
+% Furthermore, consider introducing the source term $\{J_i, \bar{J}_i\}$ (Grassmann numbers),
+% the generalized Gaussian integral is evaluated as
+% \begin{equation}\label{eq:Gen_Gaussian}
+% 	\begin{aligned}
+% 	    Z(\bar{J}, J) &= \int \prod_{i=1}^n d\bar{\p}_i d\p_i \exp(-\sum_{ij} \bar{\p}_i A_{ij} \p_j + \sum_i \bar{J}_i \p_i + \sum_i \bar{\p}_i J_i)\\
+% 	    &= \int \prod_{i=1}^n d\bar{\p}_i d\p_i \exp(-\sum_{ij} (\bar{\p}_i - \sum_k\bar{J}_{k}{A}^{-1}_{ki}) 
+% 	    A_{ij} (\p_j - \sum_k A^{-1}_{jk} + \sum_i \bar{J}_i \p_i + \sum_i \bar{\p}_i J_i)
+% 	\end{aligned}
+% \end{equation}
+
+
+
+\section{Matrix tree theorem and fermionic representation}
+The derivation of the fermionic representation proceeds by making use of Kirchhoff's matrix tree theorem \cite{Kirchhoff1847} and its
+generalizations \cite{Chaiken1982, Moon1994}, which relates the graph's Laplacian to the spanning trees or (rooted) spanning forest of the graph. 
+For an undirected finite graph $G = (V, E)$ with vertices $V$ and edges $E$, we assign each edge $e \in E$ a weight $w_e$. The Laplacian matrix $L$ of 
+the graph $G$ is then defined by
+\begin{equation}
+	L_{ij} =
+	\begin{cases}
+	-w_{ij}, & \langle ij \rangle \in E, \\
+	\sum_{k(\neq i)} w_{ik} & i = j.
+	\end{cases}
+\end{equation}
+The matrix tree theorem states that
+\begin{equation}\label{eq:matrix_tree}
+	\operatorname{det} L(i) = \sum_{T \in \scrT} \prod_{e\in T} w_e, \quad \forall i \in V,
+\end{equation}
+where $L(i)$ is the submatrix of $L$ by removing the $i$th row and column, and $\scrT$ is the collection of all spanning trees in $G$.
+Notice that Eq.~\eqref{eq:matrix_tree} holds for arbitrary vertex $i \in V$. Furthermore, equation~\eqref{eq:matrix_tree} can be 
+generalized to the case of a set of vertices $I = \{i_1, \dots, i_r\} \in V$, which has the form
+\begin{equation}\label{eq:matrix_tree_gen}
+	\operatorname{det}L(I) = \operatorname{det}L (i_1, \dots, i_r) = \sum_{F \in \scrF(i_1, \dots, i_r)} \prod_{e \in F} w_e, 
+\end{equation}
+where $L(I)$ now is the submatrix of $L$ by removing the same rows and columns contained in $I$, and $\scrF(i_1, \dots, i_r)$ is the collection
+of rooted spanning forests in $G$ with roots $i_1, \dots, i_r$.
+To connect with Grassmann variables, we express the principal minor $\operatorname{det} L(I)$ on the left hand side of Eq.~\eqref{eq:matrix_tree_gen} using Eq.~\eqref{eq:Wick}.
+For each site $i \in V$, we introduce a pair of Grassmann variables $\psi_i, \bar{\psi}_i$ and rewrite Eq.~\eqref{eq:matrix_tree_gen} as
+\begin{equation}\label{eq:matrix_tree_Grassmann}
+	\int D(\p, \bar{\p})\left(\prod_{\alpha=1}^r \psi_{i_{\alpha}} \bar{\psi}_{i_{\alpha}}\right)e^{\bar{\p} L \p} 
+	=\sum_{F \in \scrF(i_1, \dots, i_r)} \prod_{e \in F} w_e, 
+\end{equation}
+where we use $D(\p, \bar{\p})$ denote the integral measure $\prod_{i=1}^n d\p_i d\bar{\p}_i$ and 
+represent the sum $\sum_{ij} \bar{\p}_i L_{ij} \p_j$ as the matrix product $\bar{\p} L \p$. 
+
+For each connected subgraph $\G = (V_{\G}, E_{\G})$, we introduce the monomial 
+\begin{equation}
+	Q_{\G} = (\prod_{e\in E_\G}w_e)(\prod_{i\in V_{\G}}\bar{\p}_i \p_i),
+\end{equation}
+which commutes with the whole Grassmann algebra. Now let's consider a set of these subgraphs $\bm{\Gamma} = \{\G_1, \dots, \G_l\}$ and
+evaluate the following integral
+\begin{equation}
+	\int D(\p, \bar{\p}) \left(\prod_{i=i}^l Q_{\G_i}\right) e^{\bar{\p} L \p}.
+\end{equation}
+We shall focus on the case when the subgraphs $\G_i$ are vertex-disjoint, otherwise the integral vanishes due to the nilpotency of the Grassmann generators.
+Applying Eq.~\eqref{eq:matrix_tree_Grassmann}, we find the integral can be expressed as the sum of spanning forests with roots $V_{\bm{\Gamma}} = \bigcup_{i=1}^{l} V_{\G_i}$.
+Moreover, the edges $E_{\bm{\Gamma}} = \bigcup_{i=1}^l E_{\G_i}$, which are absent in these forests if we do not include $\prod_{e\in E_{\G}} w_e$ in $Q_{\G}$, are added to
+connect these rooted forests to form an object which we refer as the $\bm{\G}$-forest. More precisely, a $\bm{\G}$-forest corresponds to a spanning subgraph which recovers
+to a spanning forest with roots $V_{\bm {\G}}$ after the deletion of $E_{\bm{\G}}$, and we use $\scrF_{\bm{\G}}$ denote the set of those $\bm{\G}$-forests. Therefore, we have
+\begin{equation}
+	\int D(\p, \bar{\p}) \left(\prod_{i=i}^l Q_{\G_i}\right) e^{\bar{\p} L \p} = \sum_{H \in \scrF_{\bm{\Gamma}}} \prod_{e\in H} w_e.
+\end{equation} 
+Summing over all possible sets $\bm{\G}$ (including the empty set), we obtain the following formula
+\begin{equation}
+	\int D(\psi, \bar{\psi}) \exp\left(\bar{\psi} L \psi+\sum_{\Gamma} t_{\Gamma} Q_{\Gamma}\right)=
+	\sum_{\substack{\bm{\G}\  \text{vertex-}\\ \text{disjoint}} }\left(\prod_{\Gamma \in {\bm{\Gamma}}} t_{\Gamma}\right) \sum_{H \in \mathcal{F}_{\bm{\G}}} \prod_{e \in H} w_{e},
+\end{equation}
+where the summation of $\Gamma$ in the left hand side is over all possible connected subgraphs (not necessarily spanning).
+
+Interchanging the summations over $\Gamma$ and $H$, that's, for each spanning subgraph $H$ with connected components ($H_1, \dots, H_l$), 
+we first compute
+\begin{equation}
+	W(H_i) = \sum_{\G \prec H_i} t_{\G}
+\end{equation}
+for each component $H_i$, where $\G \prec H_i$ denotes the set of connected subgraphs $\G$ which relate to $H_i$.
+Therefore, the integral is rewritten as
+\begin{equation}
+	\int D(\psi, \bar{\psi}) \exp\left(\bar{\psi} L \psi+\sum_{\Gamma} t_{\Gamma} Q_{\Gamma}\right)=
+	\sum_{\substack{H\ \text{spanning-}\\ \text{subgraph}}} \left(\prod_{i=1}^l W(H_i)\right) \prod_{e \in H} w_{e}.
+\end{equation}
+
+Consider the special case in which $t_{\G} = t$ when $V_{\G}$ consists of a single vertex and $E_{\G}$ is empty, $t_{\G} = -t$ when $V_\G$
+consists of two neighboring vertices and $E_{\G}$ contains the edge connecting them, and $t_{\G} = 0$ otherwise. Then $W(H_i)$ is non-zero only when
+$H_i$ is a tree, and the integral recovers the partition function of the spanning forests:
+\begin{equation}\label{eq:fermionic_repr}
+	\begin{aligned}
+	\int &D(\psi, \bar{\psi}) \exp \left[\bar{\psi} L \psi+t \sum_{i} \bar{\psi}_{i} \psi_{i} -t \sum_{\langle i j\rangle} w_{i j} \bar{\psi}_{i} \psi_{i} \bar{\psi}_{j} \psi_{j}\right]\\
+	 &= \sum_{\substack{F \in \scrF \\ F = (F_1, \dots, F_l)}} \prod_{i=1}^l\left(t|V_{F_i}| - t|E_{F_i}|\right) \prod_{e\in F} w_e 
+	 = t^{|V|} \sum_{F\in \scrF}  \prod_{e\in F} \frac{w_e}{t},
+	\end{aligned}
+\end{equation}
+where in the last equality we use the identity $\#(\text{components}) = |V| - |E_{F}|$ for spanning forests. On the left side of Eq.~\eqref{eq:fermionic_repr}, 
+we have a fermionic theory with a Gaussian term and a nearest-neighbor four-fermion interaction. The coupling $t$ is actually redundant in the above formulation. To see this, 
+We rewrite the weight $w_e^\prime = w_e/t$ and rescale the field $\p \to \p^\prime =\sqrt{t} \p, \bar{\p} \to \bar{\p^\prime} = \sqrt{t}\bar{\p}$, which
+gives the following formula
+\begin{equation}
+	\int D(\psi, \bar{\psi}) \exp \left[\bar{\psi} L \psi+ \sum_{i} \bar{\psi}_{i} \psi_{i} - \sum_{\langle i j\rangle} w_{i j} \bar{\psi}_{i} \psi_{i} \bar{\psi}_{j} \psi_{j}\right]\\
+	 = \sum_{F\in \scrF}  \prod_{e\in F} w_e,
+\end{equation}
+where we further omit the superscript.
+
+In Ref.~\inlinecite{Roland2021Hyperbolic}, it was noticed that Eq.~\eqref{eq:fermionic_repr} describes a fermionic version of the hyperbolic sigma model, which 
+is referred to as the $\mathbb{H}^{0|2}$ model for short. In the $\mathbb{H}^{0|2}$ model, in addition to the Grassmann pair $\psi_i, \bar{\psi}_i$, we introduce
+the bosonic field
+\begin{equation}
+	z_i = \sqrt{1 - 2\b{\psi}_i\psi_i} = 1-\bar{\p}_i\p_i,
+\end{equation}
+which is an even element in the Grassmann algebra. The inner product between triplets $u_i = (\p_i, \bar{\p}_i, z_i)$ and 
+$u_j = (\p_i, \bar{\p}_i, z_i)$ are defined as
+\begin{equation}
+	u_i \cdot u_j = -\bar{\p_i}\p_j - \bar{\p_j}\p_i - z_i z_j = -1 - \bar{\p_i}\p_j - \bar{\p_j}\p_i + \bar{\p}_i\p_i + \bar{\p}_j\p_j
+	-\bar{\p}_i\p_i\bar{\p}_j\p_j.
+\end{equation}
+Note that $u_i \cdot u_i = -1$, for which $u_i$ is interpreted as a supervector taking values in a hyperbolic space. 
+The action of the model is defined by $S = \frac{1}{2}\sum_{\langle ij \rangle} w_{ij}(u_i - u_j)^2$, identical to the non-linear sigma model.
+The expectation value of observable $F$ is written as
+\begin{equation}
+	\langle F \rangle = \frac{1}{Z} \int \left(\prod_{i}d\p_i d\bar{\p}_i \frac{1}{z_i}\right) F e^S,
+	\quad Z = \int \left(\prod_{i}d\p_i d\bar{\p}_i \frac{1}{z_i}\right) e^S,
+\end{equation}
+where the factor $1/z_i$ arises from the Haar measure over the hyperbolic space. Since $1/z_i = 1/(1-\bar{\p_i}\p_i) = 1 + \bar{\p_i}\p_i = e^{\bar{\p_i}\p_i}$,
+the expectation value of $F$ in the $\mathbb{H}^{0|2}$ sigma model is exactly the same as the corresponding expectation value in the spanning-forest model.
+In particular, it's shown that the two-point correlation function of the $\mathbb{H}^{0|2}$ model is identical to the connection probability 
+in the spanning forests
+\begin{equation}\label{eq:H02_SPF_corr}
+-\langle u_x \cdot u_y \rangle_{\mathbb{H}^{0|2}} = \mathbb{P}_{\text{SPF}}[x \leftrightarrow y], \quad \forall x, y \in V.
+\end{equation}
+Equation~\eqref{eq:H02_SPF_corr} is in close analogy with Eq.~\eqref{eq:Potts_RC_corr} for the Potts model. Roughly speaking,
+the hyperbolic sigma model can be regarded as the $0$-state Potts model, which has a continuous symmetry group $\text{OSp}(1|2)$
+instead of the discrete symmetry group $S_q$ for the $q\geq2$ Potts model. The relation between the 
+
+Using Eq.~\eqref{eq:H02_SPF_corr}, Roland et al. proved that the percolation of the spanning forests only happens for $d\geq 3$.
+Moreover, they obtained that, for a sequence of tori $\Lambda_N = \mathbb{Z}^d/L^N\mathbb{Z}^d$, the connectivity probability
+in the supercritical phase can be written as
+\begin{equation}\label{eq:SPF_conn}
+	\mathbb{P}_{\text{SPF}}[0\leftrightarrow x] = \zeta_{d}(w)+\frac{c(w)}{w|x|^{d-2}}+O\left(\frac{1}{w|x|^{d-2+\kappa}}\right)+O\left(\frac{1}{w L^{\kappa N}}\right),
+\end{equation}
+where $\zeta_{d}(\beta)=1-O(1 / \beta), c(\beta)=c+O(1 / \beta)$ and $\kappa > 0$. It's interesting to note that the supercritical
+phase of the spanning forests behaves differently from the supercritical phase of the bond percolation. For the spanning forests,
+the model behaves like a critical system even in the supercritical phase in the sense that the subleading term in Eq.~\eqref{eq:SPF_conn}
+decays as the correlation of a massless free field. This phenomenon is already discovered in the case of complete graphs. 
+In Ref.~\inlinecite{Luczak1992,Martin2018}, the authors have shown that, for the complete graph, there is an unbounded number of components whose sizes are of order $|V|^{2/3}$.
+Interestingly, the same scaling law $|V|^{2/3}$ appears at the critical point on the complete graph. In the following, 
+we will explore this phenomenon in $d=3$ by focusing on the finite-size scaling behaviors of the non-giant components of the model, which
+complements the result from Eq.~\eqref{eq:SPF_conn}.

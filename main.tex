@@ -16,6 +16,12 @@
 \newcommand{\scrF}{{\mathcal F}}
 \newcommand{\scrS}{{\mathcal S}}
 \newcommand{\scrM}{{\mathcal M}}
+\newcommand{\scrH}{{\mathcal H}}
+\newcommand{\scrC}{{\mathcal C}}
+\newcommand{\scrT}{{\mathcal T}}
+
+\newcommand{\p}{{\psi}}
+\newcommand{\G}{{\Gamma}}
 
 \begin{document}
 
@@ -23,18 +29,18 @@
 % \copyrightpage
 
 \frontmatter
-\input{chapters/abstract.tex}
+\include{chapters/abstract.tex}
 \tableofcontents
 % \listoffigures
 % \listoftables
 % \input{chapters/notation.tex}
 
 \mainmatter
-\input{chapters/introduction.tex}
-\input{chapters/SPF.tex}
-\input{chapters/Algo.tex}
-\input{chapters/Results.tex}
-\input{chapters/Conclusion.tex}
+\include{chapters/introduction.tex}
+\include{chapters/SPF.tex}
+\include{chapters/Algo.tex}
+\include{chapters/Results.tex}
+\include{chapters/Conclusion.tex}
 % \input{chapters/intro.tex}
 % \input{chapters/intro.tex}
 % \input{chapters/floats.tex}
@@ -44,11 +50,11 @@
 \bibliography{bib/ustc}  % 参考文献使用 BibTeX 编译
 % \printbibliography       % 参考文献使用 BibLaTeX 编译
 
-\appendix
-\input{chapters/complementary.tex}
+% \appendix
+% \input{chapters/complementary.tex}
 
-\backmatter
-\input{chapters/acknowledgements.tex}
-\input{chapters/publications.tex}
+% \backmatter
+% \input{chapters/acknowledgements.tex}
+% \input{chapters/publications.tex}
 
 \end{document}
