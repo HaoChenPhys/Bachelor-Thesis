@@ -3,11 +3,11 @@
 \section{Random spanning forests}
 The random spanning forests is a particularly interesting model in statistical physics due to its special critical phenomena
 and close connections to other statistical models. It decsribes the set of spanning forests $\scrF$, i.e., acyclic spanning subgraphs, of the underlying
-lattice $G$ with each occupied edge of the forest weighted by $w$. The partition function of the model is written as
+lattice $G$ with each edge of the forest (referred to as occupied edge) weighted by $w$. The partition function of the model is written as
 \begin{equation}\label{eq:SPF_partition}
-	\scrZ = \sum_{F \in \scrF} w^{\eta(F)},
+	\scrZ_{\text{SF}} = \sum_{F \in \scrF} w^{|E_F|},
 \end{equation}
-where $\eta(F)$ counts the number of occupied edges in $F$.
+where $|E_F|$ counts the number of edges in $F$. 
 
 The model is reminiscent of the famous model of bond percolation, where each bond is occupied independently with probability $p$ and do not need to form a forest.
 In percolation, it's well known that for dimension $d \geq 2$, there exists a critical point $0 < p_c < 1$ such that there is a unique giant cluster whose size is of the order of the system volume
@@ -32,39 +32,39 @@ It has been proved that \cite{Luczak1992,Martin2018} when $G$ is a complete grap
 where $|V|$ is the system size. Remarkably, the scale of clusters at criticality, in this case, is also $|V|^{2/3}$. In other words, the supercritical
 phase without the largest component looks like criticality. Our goal is to explore this phenomenon at finite dimensions, in particular $d=3$, using numerical methods.
 
-\section{Monte Carlo methods}
+\section{Monte Carlo methods}\label{sec:MC_intro}
 We use Monte Carlo methods to study the spanning-forest model. This type of methods plays a very important role in statistical physics by
-providing a way to extract statistical properties from high dimensional configuration space. To be more specific, in statistical
+providing a way to extract statistical properties from high-dimensional configuration space. To be more specific, in statistical
 physics, we are usually interested in the ensemble average of various observables of system of equilibrium, which is governed by a probability distribution $\pi$ over the configuration space $\scrS$ of the system. 
-For observable $f(x)$ (as a function of state $x$), its ensemble average is defined as
+For observable $F(x)$ (as a function of state $x$), its ensemble average is defined as
 \begin{equation}\label{eq:weighted_ave}
-	\langle f \rangle = \sum_{x \in \scrS} f(x) \pi(x).
+	\langle F \rangle = \sum_{\mu \in \scrS} F(\mu) \pi_\mu.
 \end{equation}
 Typically, the state space $\scrS$ is exponentially large, which makes the computation of Eq.~\eqref{eq:weighted_ave} by enumerating all possible states impractical.
 Taking the Ising model as an example, for a system with total of $N$ spins, the total number of spin configurations grows exponentially as $2^N$.
-Unless there exists an analytic formula for $\langle f \rangle$, the computational resource required to compute $\langle f \rangle$ 
+Unless there exists an analytic formula for $\langle F \rangle$, the computational resource required to compute $\langle F \rangle$ 
 using Eq.~\eqref{eq:weighted_ave} grows exponentially with $N$.
 
 The central idea of Monte Carlo simulations is to circumvent this difficulty by importance sampling, i.e., directly sampling states from the distribution
 $\pi$, and then compute the unweighted average as the estimated value of the ensemble average, i.e.,
 \begin{equation}
-	\bar{f} = \frac{1}{n}\sum_{i=1}^n f(X_i) \approx \langle f \rangle,
+	\bar{F} = \frac{1}{n}\sum_{i=1}^n F(X_i) \approx \langle F \rangle,
 \end{equation}
-where $X_i$ is the configuration at sampling step $i$, and $n$ is the number of sampling steps. In practice, one can get a decent estimate of $\langle f \rangle $ with $n$ much smaller
+where $X_i$ is the configuration at sampling step $i$, and $n$ is the number of sampling steps. In practice, one can get a decent estimate of $\langle F \rangle $ with $n$ much smaller
 than the dimension of the state space $\scrS$. The reason is that this procedure takes account of those most `important' configurations,
-i.e., configurations with large statistical weights, and ignores those that have negligible contributions on $\langle f \rangle$.
+i.e., configurations with large statistical weights, and ignores those that have negligible contributions on $\langle F \rangle$.
 
 In order to simulate the distribution $\pi$, Monte Carlo methods construct a Markov chain $\scrM$ with transition probability matrix 
-$P = \{p_{xy}\}_{x, y\in \scrS} = \{\mathbb{P}(X_{t+1} = y|X_{t} = x)\}_{x, y\in \scrS}$ satisfying the following conditions:
+$P = \{p_{\mu\nu}\}_{\mu, \nu \in \scrS} = \{\mathbb{P}(X_{t+1} = \nu|X_{t} = \mu)\}_{\mu, \nu\in \scrS}$ satisfying the following conditions:
 \begin{enumerate}[label=(\alph*)]
-	\item The distribution $\pi$ is the stationary distribution of $\scrM$, i.e.,  $\sum_x \pi_x p_{xy} = \pi_y$ for all $y\in \scrS$.
-	\item The Markov chain $\scrM$ is ergodic, i.e., there exists a positive integer $t_0$, such that for all paris $x, y \in \scrS$, 
-	$\mathbb{P}(X_t = y|X_0 = x) > 0$ for $t > t_0$.
+	\item The distribution $\pi$ is the stationary distribution of $\scrM$, i.e.,  $\sum_\mu \pi_{\mu} p_{\mu\nu} = \pi_\nu$ for all $\nu\in \scrS$.
+	\item The Markov chain $\scrM$ is ergodic, i.e., there exists a positive integer $t_0$, such that for all paris $\mu, \nu\in \scrS$, 
+	$\mathbb{P}(X_t = \nu|X_0 = \mu) > 0$ for $t > t_0$.
 \end{enumerate}
 Condition (b) ensures that it's possible to sample any state in $\scrS$ in a Markov chain staring from arbitrary state.
-One common way to obtain a transition probability $p_{xy}$ satisfying condition (a) is by further imposing the detailed balance condition
+One common way to obtain a transition probability $p_{\mu\nu}$ satisfying condition (a) is by further imposing the detailed balance condition
 \begin{equation}
-	\pi_x p_{xy} = \pi_y p_{yx}, \quad \forall x, y \in S, x\neq y.
+	\pi_{\mu} p_{\mu\nu} = \pi_{\nu} p_{\nu \mu}, \quad \forall \mu, \nu \in S, \mu \neq \nu.
 \end{equation}
 
 The content we present above only gives a rough idea of the Monte Carlo methods. For a more detailed description, please see, e.g., Ref.~\inlinecite{Sokal1997, Landau2014, Binder2010} and references therein.

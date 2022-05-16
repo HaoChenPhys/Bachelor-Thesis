@@ -86,20 +86,20 @@ The equivalence between the two systems has facilitated the study of both models
 Now let's consider the limit of $q\to 0$ of Eq.~\eqref{eq:RC_measure}. The measure $\pi_{\text{RC}}$ can be rewritten as
 \begin{equation}
 	\begin{aligned}
-	\pi_{\text{RC}}(\omega) &= (1-p)^{|E|}(\frac{p}{1-p})^{\eta(\omega)}q^{k(\omega)}\Bigg/\left[(1-p)^{|E|}\sum_{\omega \in \Omega}(\frac{p}{1-p})^{\eta(\omega)}q^{k(\omega)}\right]\\
-	&= (\frac{p}{1-p})^{\eta(\omega)}q^{k(\omega)}\Bigg/\left[\sum_{\omega \in \Omega}(\frac{p}{1-p})^{\eta(\omega)}q^{k(\omega)}\right],\\
+	\pi_{\text{RC}}(\omega) &= (1-p)^{|E|}(\frac{p}{1-p})^{|E_\omega|}q^{k(\omega)}\Bigg/\left[(1-p)^{|E|}\sum_{\omega \in \Omega}(\frac{p}{1-p})^{|E_\omega|}q^{k(\omega)}\right]\\
+	&= (\frac{p}{1-p})^{|E_\omega|}q^{k(\omega)}\Bigg/\left[\sum_{\omega \in \Omega}(\frac{p}{1-p})^{|E_\omega|}q^{k(\omega)}\right],\\
 	\end{aligned}
 \end{equation}
-where $\eta(\omega)$ denotes the number of occupied edges. We further require that $p$ approaches 0 at the same rate as does $q$, i.e., $p = w q \to 0$, which simplifies $\pi_{\text{RC}}(\omega)$ to
+where $E_\omega$ denotes the set of occupied edges of the bond configuration $\omega$. We further require that $p$ approaches 0 at the same rate as does $q$, i.e., $p = w q \to 0$, which simplifies $\pi_{\text{RC}}(\omega)$ to
 \begin{equation}
-	\pi_{\text{RC}}(\omega) = w^{\eta(\omega)}q^{\eta(\omega) + k(\omega)}\Bigg/\left[\sum_{\omega \in \Omega}w^{\eta(\omega)}q^{\eta(\omega) + k(\omega)}\right], \quad q \to 0.
+	\pi_{\text{RC}}(\omega) = w^{|E_\omega|}q^{|E_\omega| + k(\omega)}\Bigg/\left[\sum_{\omega \in \Omega}w^{|E_\omega|}q^{|E_\omega| + k(\omega)}\right], \quad q \to 0.
 \end{equation}
-Since we have $\eta(\omega) + k(\omega) \geq |V|$, it follows that $\pi_{\text{RC}}(\omega)$ is only non-zero
+Since we have $|E_\omega| + k(\omega) \geq |V|$, it follows that $\pi_{\text{RC}}(\omega)$ is only non-zero
 when the equality holds, which selects out the spanning forests:
 \begin{equation}
 	\pi_{\text{RC}}(\omega) =
 	\begin{cases}
-	 w^{\eta(\omega)}/\sum_{\omega \in \scrF}w^{\eta(\omega)}, &\text{if}\ \omega \in \scrF, \\
+	 w^{|E_\omega|}/\sum_{\omega \in \scrF}w^{|E_\omega|}, &\text{if}\ \omega \in \scrF, \\
 	 0 &\text{otherwise}.
 	\end{cases}
 \end{equation}
@@ -296,20 +296,20 @@ Note that $u_i \cdot u_i = -1$, for which $u_i$ is interpreted as a supervector 
 The action of the model is defined by $S = \frac{1}{2}\sum_{\langle ij \rangle} w_{ij}(u_i - u_j)^2$, identical to the non-linear sigma model.
 The expectation value of observable $F$ is written as
 \begin{equation}
-	\langle F \rangle = \frac{1}{Z} \int \left(\prod_{i}d\p_i d\bar{\p}_i \frac{1}{z_i}\right) F e^S,
-	\quad Z = \int \left(\prod_{i}d\p_i d\bar{\p}_i \frac{1}{z_i}\right) e^S,
+	\langle F \rangle = \frac{1}{\scrZ} \int \left(\prod_{i}d\p_i d\bar{\p}_i \frac{1}{z_i}\right) F e^S,
+	\quad \scrZ = \int \left(\prod_{i}d\p_i d\bar{\p}_i \frac{1}{z_i}\right) e^S,
 \end{equation}
 where the factor $1/z_i$ arises from the Haar measure over the hyperbolic space. Since $1/z_i = 1/(1-\bar{\p_i}\p_i) = 1 + \bar{\p_i}\p_i = e^{\bar{\p_i}\p_i}$,
 the expectation value of $F$ in the $\mathbb{H}^{0|2}$ sigma model is exactly the same as the corresponding expectation value in the spanning-forest model.
-In particular, it's shown that the two-point correlation function of the $\mathbb{H}^{0|2}$ model is identical to the connection probability 
+In particular, it's shown that the two-point correlation function of the $\mathbb{H}^{0|2}$ model is identical to the two-point connection probability 
 in the spanning forests
 \begin{equation}\label{eq:H02_SPF_corr}
--\langle u_x \cdot u_y \rangle_{\mathbb{H}^{0|2}} = \mathbb{P}_{\text{SPF}}[x \leftrightarrow y], \quad \forall x, y \in V.
+-\langle u_x \cdot u_y \rangle_{\mathbb{H}^{0|2}} = \mathbb{P}_{\text{SF}}[x \leftrightarrow y], \quad \forall x, y \in V.
 \end{equation}
 Equation~\eqref{eq:H02_SPF_corr} is in close analogy with Eq.~\eqref{eq:Potts_RC_corr} for the Potts model. Roughly speaking,
 the hyperbolic sigma model can be regarded as the $0$-state Potts model, which has a continuous symmetry group $\text{OSp}(1|2)$
-instead of the discrete symmetry group $S_q$ for the $q\geq2$ Potts model. The relations between the models introduced so far 
-are summerized in Fig.~\ref{fig:model_relation}.
+instead of the discrete symmetry group $S_q$ for the $q\geq2$ Potts model, and the spanning-forest model can be seen as the
+Fortuin-Kasteleyn representation of of this hyperbolic sigma model. The relations between the models introduced so far are summerized in Fig.~\ref{fig:model_relation}.
 
 \begin{figure}[b]
 	\centering
@@ -324,13 +324,13 @@ Using Eq.~\eqref{eq:H02_SPF_corr}, Roland et al. proved that the percolation of 
 Moreover, they obtained that, for a sequence of tori $\Lambda_N = \mathbb{Z}^d/L^N\mathbb{Z}^d$, the connectivity probability
 in the supercritical phase can be written as
 \begin{equation}\label{eq:SPF_conn}
-	\mathbb{P}_{\text{SPF}}[0\leftrightarrow x] = \zeta_{d}(w)+\frac{c(w)}{w|x|^{d-2}}+O\left(\frac{1}{w|x|^{d-2+\kappa}}\right)+O\left(\frac{1}{w L^{\kappa N}}\right),
+	\mathbb{P}_{\text{SF}}[0\leftrightarrow x] = \zeta_{d}(w)+\frac{c(w)}{w|x|^{d-2}}+O\left(\frac{1}{w|x|^{d-2+\kappa}}\right)+O\left(\frac{1}{w L^{\kappa N}}\right),
 \end{equation}
 where $\zeta_{d}(\beta)=1-O(1 / \beta), c(\beta)=c+O(1 / \beta)$ and $\kappa > 0$. It's interesting to note that the supercritical
 phase of the spanning forests behaves differently from the supercritical phase of the bond percolation. For the spanning forests,
 the model behaves like a critical system even in the supercritical phase in the sense that the subleading term in Eq.~\eqref{eq:SPF_conn}
-decays as the correlation of a massless free field. This phenomenon is already discovered in the case of complete graphs. 
+decays as the correlation of a massless free field. A similar phenomenon was found in the case of complete graphs. 
 In Ref.~\inlinecite{Luczak1992,Martin2018}, the authors have shown that, for the complete graph, there is an unbounded number of components whose sizes are of order $|V|^{2/3}$.
-Interestingly, the same scaling law $|V|^{2/3}$ appears at the critical point on the complete graph. In the following, 
-we will explore this phenomenon in $d=3$ by focusing on the finite-size scaling behaviors of the non-giant components of the model, which
+Interestingly, the same scaling law $|V|^{2/3}$ appears at the critical point in the complete graph. In the following, 
+we first will explore this phenomenon in $d=3$ by focusing on the finite-size scaling behaviors of the non-giant components of the model, which
 complements the result from Eq.~\eqref{eq:SPF_conn}.

@@ -1,1 +1,115 @@
 \chapter{Algorithm and data structure}\label{chap:Algo}
+
+\section{Sweeny algorithm}
+We use the Sweeny algorithm\cite{Sweeny1983} to simulate the spanning-forest model, which was originally presented
+to simulate the random-cluster model and can easily adapt to the spanning-forest case. The algorithm updates
+the configuration in a local manner. In detail, at every step, we randomly select an edge $e = \langle i j \rangle$ from the underlying graph $G$. 
+If $e$ is already occupied, then we propose to remove the edge from the forest and accept it with the probability
+$\mathbb{P}_{\text{remove}} = \min\{1, 1/w\}$. On the other hand, if $e = \langle i j \rangle$ is unoccupied, there are two subcases we need to 
+distinguish. (a) Vertices $i$ and $j$ belong to the same component of the forest. In this case, we just leave the
+configuration unchanged and count it as a valid step in the simulation, since connecting $i$ and $j$ would violate the
+acyclic property of the forest. (b) Vertices $i$ and $j$ belong to different components of the forest. In this case, connecting
+$i$ and $j$ will not break the forest constraint, and we propose to add the edge and accept it with probability $\mathbb{P}_{\text{insert}} = \min\{1, w\}$. 
+Algorithm~\ref{Algo:Sweeny} shows the pseudo-code of the update procedure.
+
+\begin{algorithm}
+\caption{Sweeny Algorithm} \label{Algo:Sweeny}
+    Randomly select an edge $\langle ij \rangle$ from $G$\;
+    \eIf{$\langle ij \rangle$ is \textit{occupied}}{
+      Change the state of $\langle ij \rangle$ to \textit{unoccupied} with probability $\mathbb{P}_{\text{remove}}$\;
+      }{
+        \If{\texttt{FindRoot}($i$) $\neq$ \texttt{FindRoot}($j$)} {
+        Change the state of $\langle ij \rangle$ to \textit{occupied} with probability $\mathbb{P}_{\text{insert}}$\;
+        }
+      }
+\end{algorithm}
+
+In the above code, we introduce the function \texttt{FindRoot}($i$), which returns the root of the tree that $i$ belongs.
+This function is used to determine whether the two vertices $i$ and $j$ are in the same connected component or not, and
+the most time-consuming part of the Sweeny algorithm is computing this function. Hence, finding a way to quickly
+obtain the connectivity information of the graph is crucial for speeding up the algorithm, which will be the
+topic of Sec.~\ref{}. Here, let's first examine its validity as a Monte Carlo method. As mentioned in Sec.~\ref{sec:MC_intro},
+to simulate a probability distribution $\pi$, the Markov chain constructed by the algorithm should be ergodic
+and has $\pi$ as its stationary distribution. To verify the first condition, we note that for two arbitrary spanning forests
+$F_1$ and $F_2$ of $G$, one can always first convert $F_1$ to the configuration $F_0$ with $E_{F_0} = \varnothing$ (which is
+still a spanning forest) by removing all the edges of $F_1$ and then insert the edges $E_{F_2}$ sequentially to $F_0$ 
+such that it recovers to $F_2$. Thus, the Markov chain is ergodic. As for the second condition, we prove that the Sweeny algorithm satisfies the detailed
+balance condition and hence converges to the probability distribution of the spanning forests. In the algorithm, the transition 
+probability $p_{\mu \nu} = \mathbb{P}(X_{t+1} = \mu|X_t = \nu)$ is decomposed as the product of the proposal probability $A_{\mu\to\nu}$ and acceptance
+ratio $R_{\mu\to\nu}$, i.e., $p_{\mu \nu} = A_{\mu\to\nu}R_{\mu\to \nu}$. Since the update proposed by the Sweeny algorithm is either
+removing or inserting an occupied edge, the proposal probability has the following simple form:
+\begin{equation}\label{eq:proposal_prob}
+  A_{\mu \to \nu} = 
+  \begin{cases}
+    1/|E_G|  & E_{\mu} \text{ and } E_{\nu} \text{ differ in one edge}, \\
+    0        & \text{otherwise}.
+  \end{cases}
+\end{equation}
+The acceptance ratio $R_{\mu \to \nu}$ is properly defined when $A_{\mu \to \nu} \neq 0$, which is expressed in terms of $\mathbb{P}_{\text{remove}}$ or $\mathbb{P}_{\text{insert}}$:
+\begin{equation}\label{eq:acc_ratio}
+  R_{\mu \to \nu} = 
+  \begin{cases}
+    \mathbb{P}_{\text{remove}} = \min\{1, \frac{1}{w}\} & \text{if } A_{\mu\to\nu} \neq 0 \text{ and } |E_\mu| - |E_\nu| = 1,\\
+    \mathbb{P}_{\text{insert}} = \min\{1, w\}& \text{if } A_{\mu\to\nu} \neq 0 \text{ and } |E_\nu| - |E_\mu| = 1.\\
+  \end{cases}
+\end{equation}
+With Eq.~\eqref{eq:proposal_prob} and Eq.~\eqref{eq:acc_ratio}, one can verify that the the detailed balance condition
+\begin{equation}
+  \frac{w^{|E_\mu|}}{\scrZ_{\text{SF}}}A_{\mu \to \nu} R_{\mu \to \nu} = \frac{w^{|E_\nu|}}{\scrZ_{\text{SF}}} A_{\nu \to \mu} R_{\nu \to \mu}, \quad \mu \neq \nu,
+\end{equation}
+is satisfied. Therefore, we conclude that the Sweeny algorithm generates the correct probability distribution of the spanning forests.
+
+In principle, the Sweeny algorithm introduced above can be used to simulate the spanning-forest model in any dimension. However,
+as dimension $d$ increases, the phase transition point $w_c$ of the model decreases roughly as $d^{-1}$. For example, the critical point in
+the complete graph ($d = \infty$) is $w_c = 1/|V|$\cite{Bedini2009}, which approaches zero as $|V| \to \infty$. As a result,
+the acceptance ratio for inserting an occupied edge is extremely small near the critical point in high-dimensional lattices, leading to the problem that the Markov chain is strongly
+correlated, as the configuration remains unchanged during most of the simulation time. Fortunately, there is a simple trick to resolve this issue.
+Instead of choosing an edge randomly and proposing the move based on the state of the edge, we first use a random number to decide whether to remove or insert an edge,
+then select an edge based on this decision to propose the update. The detail of the modified version is presented in Algorithm~\ref{Algo:Sweeny_modified}
+\begin{algorithm}
+\SetNoFillComment
+\caption{Sweeny Algorithm (modified)} \label{Algo:Sweeny_modified}
+    Draw a uniformly distributed random number $r \in [0, 1)$\;
+    Randomly select a vertice $i \in V$\;
+    \eIf{$r$ < $p_m$}{
+    Randomly select an edge $e$ from $E_{\text{unocc}}(i)$\;
+    \tcc{$E_{\text{unocc}}(i)$: The set of unoccupied edges incident to $i$}
+    Change the state of $e$ to \textit{occupied} with probability $\mathbb{P}^\prime_{\text{insert}}$\;
+    }{
+    Randomly select an edge $e$ from $E_{\text{occ}}(i)$\;
+    \tcc{$E_{\text{occ}}(i)$: The set of occupied edges incident to $i$}
+    Change the state of $e$ to \textit{unoccupied} with probability $\mathbb{P}^\prime_{\text{remove}}$\;
+    }
+\end{algorithm}
+
+In the implementation, extra care needs to be taken when $E_{\text{unocc}}(i) = \varnothing$ or $E_{\text{occ}}(i) = \varnothing$.
+In both cases, we leave the configuration unchanged and count it as a valid step in the Monte Carlo simulation.
+The new probabilities $\mathbb{P}^\prime_{\text{insert}}$ and $\mathbb{P}^\prime_{\text{remove}}$ are determined by the 
+detailed balance condition
+\begin{equation}\label{eq:SPF_db}
+  p_m \frac{1}{V} \frac{1}{n_{\text{neighbors}}  - b_i} \mathbb{P}^\prime_{\text{insert}} =
+  w (1-p_m) \frac{1}{V} \frac{1}{b_i+1} \mathbb{P}^\prime_{\text{remove}},
+\end{equation}
+where $n_{\text{neighobors}}$ is the number of neighbors for each site, which is $2d$ for a $d$-dimensional hypercubic
+lattice and $|V|-1$ for a complete graph, and $b_i$ is the number of occupied edges incident to $i$ before insertion. 
+One solution to Eq.\eqref{eq:SPF_db} is
+\begin{equation}
+\begin{aligned}
+\mathbb{P}^\prime_{\text{insert}}  &= \min\{1, \frac{w(1-p_m)}{p_m}\frac{n_{\text{neighbors}}-b_i}{b_i+1}\}, \\
+\mathbb{P}^\prime_{\text{remove}}  &= \min\{1, \frac{p_m}{w(1-p_m)}\frac{b_i^{\prime}}{n_{\text{neighbors}}-b_i^{\prime}+1}\},
+\end{aligned}
+\end{equation}
+where $b^\prime_i = b_i + 1$ is the number of occupied edges before the removal operation. Because $b_i \sim O(1)$ and $w\sim O(\frac{1}{n_{\text{neighbors}}})$
+for a spanning forest, both $\mathbb{P}^\prime_{\text{insert}}$ and $\mathbb{P}^\prime_{\text{remove}}$ are of the order of unity.
+Thus, the modified Sweeny algorithm does not suffer the problem of a small acceptance ratio in high dimensions, and we adopt this version
+to simulate the model on the cubic lattice and complete graph.
+
+
+
+
+% In fact, the problem of getting the
+% connectivity information of a graph is known as the dynamical connectivity problem in graph theory, and several
+% data structures have been proposed to tackle the problem\cite{}. In Sec.~\ref{}, we will describe a data structure called 
+% the link-cut tree, whose amortized time complexity for querying the connectivity between two vertices in a spanning-forest
+% is $O(\log |V|)$.
+
