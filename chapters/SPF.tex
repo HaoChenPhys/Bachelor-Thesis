@@ -108,7 +108,7 @@ $q \to 0$ while keeping the ratio $w = p/q$ finite.
 
 \section{Grassmann variable}
 To explore the critical behavior of this geometrical model, it is more convenient to work on its fermionic representation \cite{Caracciolo2004}, 
-which allows a field-theoretic approach. For completeness, we shall first introduce the Grassman variable, which is the central object
+which allows a field-theoretic approach. For self-completeness, we shall first introduce the Grassman variable, which is the central object
 of fermionic theories. 
 
 A Grassmann algebra describes anticommuting objects, which is defined by a set of generators $\{\p_1, \dots,\p_n\}$ satisfying
@@ -215,13 +215,13 @@ generalized to the case of a set of vertices $I = \{i_1, \dots, i_r\} \in V$, wh
 \end{equation}
 where $L(I)$ now is the submatrix of $L$ by removing the same rows and columns contained in $I$, and $\scrF(i_1, \dots, i_r)$ is the collection
 of rooted spanning forests in $G$ with roots $i_1, \dots, i_r$.
-To connect with Grassmann variables, we express the principal minor $\operatorname{det} L(I)$ on the left hand side of Eq.~\eqref{eq:matrix_tree_gen} using Eq.~\eqref{eq:Wick}.
+To connect with Grassmann variables, we express the principal minor $\operatorname{det} L(I)$ on the left-hand side of Eq.~\eqref{eq:matrix_tree_gen} using Eq.~\eqref{eq:Wick}.
 For each site $i \in V$, we introduce a pair of Grassmann variables $\psi_i, \bar{\psi}_i$ and rewrite Eq.~\eqref{eq:matrix_tree_gen} as
 \begin{equation}\label{eq:matrix_tree_Grassmann}
 	\int D(\p, \bar{\p})\left(\prod_{\alpha=1}^r \psi_{i_{\alpha}} \bar{\psi}_{i_{\alpha}}\right)e^{\bar{\p} L \p} 
 	=\sum_{F \in \scrF(i_1, \dots, i_r)} \prod_{e \in F} w_e, 
 \end{equation}
-where we use $D(\p, \bar{\p})$ denote the integral measure $\prod_{i=1}^n d\p_i d\bar{\p}_i$ and 
+where we use $D(\p, \bar{\p})$ to denote the integral measure $\prod_{i=1}^n d\p_i d\bar{\p}_i$ and 
 represent the sum $\sum_{ij} \bar{\p}_i L_{ij} \p_j$ as the matrix product $\bar{\p} L \p$. 
 
 For each connected subgraph $\G = (V_{\G}, E_{\G})$, we introduce the monomial 
@@ -246,7 +246,7 @@ Summing over all possible sets $\bm{\G}$ (including the empty set), we obtain th
 	\int D(\psi, \bar{\psi}) \exp\left(\bar{\psi} L \psi+\sum_{\Gamma} t_{\Gamma} Q_{\Gamma}\right)=
 	\sum_{\substack{\bm{\G}\  \text{vertex-}\\ \text{disjoint}} }\left(\prod_{\Gamma \in {\bm{\Gamma}}} t_{\Gamma}\right) \sum_{H \in \mathcal{F}_{\bm{\G}}} \prod_{e \in H} w_{e},
 \end{equation}
-where the summation of $\Gamma$ in the left hand side is over all possible connected subgraphs (not necessarily spanning).
+where the summation of $\Gamma$ in the left-hand side is over all possible connected subgraphs (not necessarily spanning).
 
 Interchanging the summations over $\Gamma$ and $H$, that's, for each spanning subgraph $H$ with connected components ($H_1, \dots, H_l$), 
 we first compute
@@ -309,7 +309,7 @@ in the spanning forests
 Equation~\eqref{eq:H02_SPF_corr} is in close analogy with Eq.~\eqref{eq:Potts_RC_corr} for the Potts model. Roughly speaking,
 the hyperbolic sigma model can be regarded as the $0$-state Potts model, which has a continuous symmetry group $\text{OSp}(1|2)$
 instead of the discrete symmetry group $S_q$ for the $q\geq2$ Potts model, and the spanning-forest model can be seen as the
-Fortuin-Kasteleyn representation of of this hyperbolic sigma model. The relations between the models introduced so far are summerized in Fig.~\ref{fig:model_relation}.
+Fortuin-Kasteleyn representation of this hyperbolic sigma model. The relations between the models introduced so far are summarized in Fig.~\ref{fig:model_relation}.
 
 \begin{figure}[b]
 	\centering

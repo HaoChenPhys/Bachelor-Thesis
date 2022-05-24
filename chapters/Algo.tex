@@ -1,6 +1,6 @@
 \chapter{Algorithm and data structure}\label{chap:Algo}
 
-\section{Sweeny algorithm}
+\section{Sweeny algorithm}\label{sec:Sweeny}
 We use the Sweeny algorithm\cite{Sweeny1983} to simulate the spanning-forest model, which was originally presented
 to simulate the random-cluster model and can easily adapt to the spanning-forest case. The algorithm updates
 the configuration in a local manner. In detail, at every step, we randomly select an edge $e = \langle i j \rangle$ from the underlying graph $G$. 
@@ -28,7 +28,7 @@ In the above code, we introduce the function \texttt{FindRoot}($i$), which retur
 This function is used to determine whether the two vertices $i$ and $j$ are in the same connected component or not, and
 the most time-consuming part of the Sweeny algorithm is computing this function. Hence, finding a way to quickly
 obtain the connectivity information of the graph is crucial for speeding up the algorithm, which will be the
-topic of Sec.~\ref{}. Here, let's first examine its validity as a Monte Carlo method. As mentioned in Sec.~\ref{sec:MC_intro},
+topic of Sec.~\ref{sec:linkcut}. Here, let's first examine its validity as a Monte Carlo method. As mentioned in Sec.~\ref{sec:MC_intro},
 to simulate a probability distribution $\pi$, the Markov chain constructed by the algorithm should be ergodic
 and has $\pi$ as its stationary distribution. To verify the first condition, we note that for two arbitrary spanning forests
 $F_1$ and $F_2$ of $G$, one can always first convert $F_1$ to the configuration $F_0$ with $E_{F_0} = \varnothing$ (which is
@@ -73,11 +73,11 @@ then select an edge based on this decision to propose the update. The detail of 
     Randomly select a vertice $i \in V$\;
     \eIf{$r$ < $p_m$}{
     Randomly select an edge $e$ from $E_{\text{unocc}}(i)$\;
-    \tcc{$E_{\text{unocc}}(i)$: The set of unoccupied edges incident to $i$}
+    \tcc{$E_{\text{unocc}}(i)$: The set of unoccupied edges that are incident to $i$}
     Change the state of $e$ to \textit{occupied} with probability $\mathbb{P}^\prime_{\text{insert}}$\;
     }{
     Randomly select an edge $e$ from $E_{\text{occ}}(i)$\;
-    \tcc{$E_{\text{occ}}(i)$: The set of occupied edges incident to $i$}
+    \tcc{$E_{\text{occ}}(i)$: The set of occupied edges that are incident to $i$}
     Change the state of $e$ to \textit{unoccupied} with probability $\mathbb{P}^\prime_{\text{remove}}$\;
     }
 \end{algorithm}
@@ -104,12 +104,193 @@ for a spanning forest, both $\mathbb{P}^\prime_{\text{insert}}$ and $\mathbb{P}^
 Thus, the modified Sweeny algorithm does not suffer the problem of a small acceptance ratio in high dimensions, and we adopt this version
 to simulate the model on the cubic lattice and complete graph.
 
+\section{Link-cut trees}\label{sec:linkcut}
+As mentioned in Sec.~\ref{sec:Sweeny}, the time complexity of the Sweeny algorithm mainly depends on the efficiency
+of the function \texttt{FindRoot}($i$). A straightforward implementation of \texttt{FindRoot}($i$) is to 
+perform a depth-first search from vertex $i$ every time the function is called. However, the time complexity
+of this implementation is  proportional to the size of the component that vertex $i$ is in, 
+which can be as large as $O(|V| + |E|)$ when the model is at the supercritical phase. Therefore, a more efficient
+graph algorithm or data structure is desired in order to speed up the Sweeny algorithm.
+Fortunately, the problem of maintaining the connectivity information of a graph in the setting where the structure of the graph constantly changes
+is known as the dynamic connectivity problem in graph theory, which has been studied extensively decades ago \cite{Sleator1983,Henzinger1999,Thorup2000,Holm2001,Sleator1985}.
+In particular, we use the data structure proposed by Sleator and Tarjan in our implementation\cite{Sleator1983}, called the link-cut trees, which are designed to represent a rooted
+forest and have an amortized time complexity of $O(\log |V|)$ for querying the connectivity between two vertices. The
+basic idea of the link-cut trees is to split each tree in the forest into vertex-disjoint paths and 
+represent each of them with a splay tree\cite{Sleator1985}, which efficiently encodes the path-based information of the forest.
 
+\subsection{Splay tree}
 
+\begin{figure}[tb]
+  \centering
+  \includegraphics[width=0.7\columnwidth]{figures/diagram/Splay.pdf}
+  \vspace{3ex}
+  \caption{Three types of rotations used in a splay operation. (a) Zig case, in which the parent $j$ is the root of the BST.
+  (b) Zig-Zig case, in which the vertex $i$ and its parent $j$ are both the left children or right children.
+  (c) Zig-Zag case, in which the vertex $i$ is a right child and its parent $j$ is a left child or vice versa.}
+  \label{fig:Splay}
+\end{figure}
+For self-completeness, let's first briefly describe the splay tree data structure. It belongs to the family of binary search trees (BSTs) with
+the additional property that recently accessed vertices are quick to access again. In a BST, each vertex $i$ is assigned a
+key as $key(i)$, which is used to determine the order of the vertex. The invariant of the BST is that, for any vertex
+$i$, nodes that are in the left subtree of $i$ have smaller keys than $key(i)$; nodes that are in the right subtree of $i$ have larger
+keys than $key(i)$. Note that for the same set of nodes and $key$ function, there is a number of valid BST representations with
+different tree structures. Moreover, among these representations, there exists a subset of BSTs whose heights only grow logarithmically 
+with the size of the tree, which are called the balanced binary search trees. This type of BSTs plays a very important role in BST-related applications, because
+the basic operations in a general BST with $n$ vertices take $O(h)$ time, where $h$ is the height of the tree, and $O(\log n)$ is the optimal lower bound
+that can be achieved using a BST. The splay tree achieves this lower bound in amortized time by adjusting the tree structure
+based on the vertices that have been accessed. To be more specific, after a vertex $i$ is accessed, it is moved to the top of the tree while maintaining
+the BST constraint. The operation is often referred to as a `splay'. There are three kinds of rotations used in a splay operation depending on the relative position
+between vertex $i$, its parent $j$, and its grandparaent $k$:
+\begin{caseof}
+  \case{Zig}{The parent $j$ is the root of the BST. Then simply rotate $i$ with respect to $j$. Fig.~\ref{fig:Splay}(a) illustrates the case 
+  in which $i$ is the left child of $j$.}
+  \case{Zig-Zig}{The vertex $i$ and its parent $j$ are either both left children or right children. Then first rotate
+  $j$ with respect to $k$, then rotate $i$ with respect to $j$. Fig.~\ref{fig:Splay}(b) illustrates the case 
+  in which $i$ and $j$ are both the left children.}
+  \case{Zig-Zag}{The vertex $i$ is a right child and its parent $j$ is a left child or vice versa. Then first rotate $i$ with respect
+  to $j$, then rotate $i$ with respect to $k$. Fig.~\ref{fig:Splay}(c) illustrates the case in which $i$ is a right child and $j$ is a left child.}
+\end{caseof}
 
-% In fact, the problem of getting the
-% connectivity information of a graph is known as the dynamical connectivity problem in graph theory, and several
-% data structures have been proposed to tackle the problem\cite{}. In Sec.~\ref{}, we will describe a data structure called 
-% the link-cut tree, whose amortized time complexity for querying the connectivity between two vertices in a spanning-forest
-% is $O(\log |V|)$.
+It can be shown that using the potential method \cite{Leiserson1994} all operations such as search (based on the key), insertion, and deletion have $O(\log n)$ 
+amortized time complexity\cite{Sleator1985}.
 
+\subsection{Operations in link-cut trees}
+After introducing the splay tree, we now begin our discussion of the link-cut trees. The data structure supports the following operations in $O(\log |V|)$ amortized time:
+\begin{itemize}
+  \item \texttt{Link}($i$,$j$). Link the edge between vertices $i$ and $j$. In the Sweeny algorithm, this corresponds to changing the status of edge 
+  $\langle ij \rangle$ from unoccupied to occupied.
+  \item \texttt{Cut}($i$,$j$).  Remove the edge between vertices $i$ and $j$. In the Sweeny algorithm, this corresponds to changing the status of edge 
+  $\langle ij \rangle$ from occupied to unoccupied.
+  \item \texttt{MakeRoot}($i$).  Make vertex $i$ the root of the tree that it belongs to.
+  \item \texttt{FindRoot}($i$).  Return the root of the tree that vertex $i$ belongs to. The operation can be used to determine if two vertices $i$ and $j$ are connected.
+  \item \texttt{PathAggregate}($i$). Return an aggregate, such as $\max$/$\min$/sum, of the keys of the vertices on the path from the root of the tree to $i$, 
+  where the keys of the vertices are user-defined quantities.
+\end{itemize}
+The last operation \texttt{PathAggregate}($i$) is interesting because the path from the root to $i$ may be very long, but the internal
+representation of the forest in the link-cut trees provides an efficient way to encode the path-based aggregation.
+This operation, for example, can be used to extract the graph distance between two vertices that are in the same connected component of the forest.
+Nevertheless, because the Sweeny algorithm does not involve the \texttt{PathAggregate} operation, we will
+not cover the implementation of \texttt{PathAggregate}. Interested readers are referred to Sleator and Tarjan's original paper~\inlinecite{Sleator1983}.
+
+In the link-cut trees, each tree of the represented forest is split into a collection of vertex-disjoint paths by the so-called `preferred-path decomposition'.
+To elucidate the rule of this decomposition, we first introduce the definitions of access and preferred child. We say a vertex $i$ is
+accessed if it's passed to any of the operations listed above. The preferred child of $i$ is equal to
+its $k$th child if the last access within $i$'s subtree is in the $k$th subtree of $i$ and \texttt{null} if the last access within $i$'s
+subtree is $i$ itself or the whole subtree of $i$ has not been accessed yet. Consequently, we can define the preferred edges,
+which connect vertices with their preferred child. And a preferred path is defined as the maximal continuous path made of preferred edges, 
+which can consist of a single node if there is no preferred edge incident to the node. As a result, each vertex is
+contained in one and only one preferred path, and the collection of preferred paths provides a vertex-disjoint partition of the represented tree.
+Figure~\ref{fig:LCT_repr}(a) shows an example of such decomposition, where preferred (unpreferred) edges are represented by solid (dashed) lines.
+
+Each preferred path is internally represented by a splay tree, which we refer to as the auxiliary tree, with vertices keyed on their depths in the represented tree. Therefore, for each vertex $i$, elements in the left (right) subtree of its auxiliary tree are higher (lower) than $v$ in the represented tree.
+Each tree in the forest is then represented as a tree of auxiliary trees. Vertices that are in the same represented tree but not in the same auxiliary tree are connected through the path-parent pointers. 
+For an auxiliary tree, its path-pointer is stored in its root, which points to the parent of the topmost vertex of the corresponding preferred
+path associated with the auxiliary tree in the represented tree. The goal of introducing the auxiliary trees is to represent 
+potentially unbalanced, high-degree trees with balanced binary search trees. Figure~\ref{fig:LCT_repr}(b) presents the internal representation
+of the represented tree in Fig.~\ref{fig:LCT_repr}(a).
+\begin{figure}[tb]
+  \centering
+  \vspace{5ex}
+  \includegraphics[width=0.8\columnwidth]{figures/diagram/LCT1.pdf}
+  \vspace{3ex}
+  \caption{(a) Preferred-path decomposition. The preferred (unpreferred) edges are represented by solid (dashed) lines. Note that there is
+  at most one preferred edge incident to a vertex. (b) Internal representation in link-cut trees. Vertices in the same auxiliary tree are connected by solid lines, and different auxiliary trees are connected via the path-parent pointers, which are represented by
+  dashed arrows.}
+  \label{fig:LCT_repr}
+\end{figure}
+
+To dynamically maintain the preferred-path decomposition of the represented tree, a subroutine \texttt{Access} is introduced
+to restructure the auxiliary trees every time any of the vertices is accessed. Denote the recently accessed element as $i$.
+Since $i$ is the last accessed element, the path $P$ from the root to $i$ in the represented tree now becomes preferred,
+and all the old preferred edges that are incident to the vertices along $P$ are made unpreferred and replaced by the path-parent pointers.
+Besides, the preferred child of $i$ is set to \texttt{null} according to the definition of a preferred child. In the auxiliary
+trees, the access process corresponds to representing the whole path $P$ with one splay tree and changing the old invalid preferred edges to
+path-parent pointers accordingly. To do this, we first splay $i$ in its auxiliary tree. Then the right subtree of $i$ corresponds
+to the elements that are below $i$ in the previous preferred path, which will be disconnected from $i$ and replaced by a path-parent
+pointer pointing to $i$. Then we walk up to $i$'s path-parent $p$. If $p$ is \texttt{null}, which means that the root of the
+represented and $i$ are already in the same auxiliary tree, i.e., they are connected via a preferred path, then no further operations are needed.
+Otherwise, we need to connect $p$'s preferred path with $i$'s preferred path, which is done by (\romannum{1}) disconnecting the lower part of
+$p$'s preferred path as we did for $i$, (\romannum{2}) setting $i$'s auxiliary tree as the right subtree of $p$ and replacing the path-parent pointer of $i$ with
+a preferred edge, and (\romannum{3}) splaying $i$ again to make it the root of the merged auxiliary tree. The above process is repeated until the path-parent
+of $i$ is \texttt{null}. The procedure is summarized in Algorithm~\ref{Algo:access}.
+\begin{algorithm}
+\SetNoFillComment
+\caption{Access($i$)} \label{Algo:access}
+    \tcc{Remove $i$'s preferred child.}
+    Splay($i$) \;
+    path-parent($i$.right) $\leftarrow$  $i$\tcp*{$i$.right: The right child of $i$ in the auxiliary tree.}
+    $i$.right $\leftarrow$ \texttt{null}\;
+    \BlankLine
+    \tcc{Make the path from the root to $i$ in the represented tree preferred.}
+    \While{$\text{path-parent}(i) \neq \texttt{null}$}{
+    $p$ $\leftarrow$ path-parent($i$)\;
+    \tcc{Change $p$'s preferred child to $i$.}
+    Splay($p$)\;
+    path-parent($p$.right) $\leftarrow$  $p$\;
+    $p$.right $\leftarrow$ $i$\;
+    parent($i$) $\leftarrow$ $p$  \tcp*{Make $p$ the parent of $i$ in the auxiliary tree.}
+    Splay($i$)\;
+    }
+\end{algorithm}
+
+The \texttt{FindRoot}($i$) operation is now easy to implement with the help of \texttt{Access}($i$). We first call \texttt{Access}($i$)
+to make it the root of the auxiliary tree containing the root $R$ of the represented tree. Because $R$ is the highest vertex
+in the whole represented tree, it's the leftmost element in its auxiliary tree, which can be found by iteratively walking
+to the left until reaching the node that has no left child, i.e., the root $R$. Finally, we splay $R$ so that the next access will be quick
+and return it as the final output. The procedure is summarized in Algorithm~\ref{Algo:FindRoot}.
+\begin{algorithm}
+\SetNoFillComment
+\caption{FindRoot($i$)} \label{Algo:FindRoot}
+    Access($i$)\;
+    \tcc{Find the leftmost element in $i$'s auxiliary tree.}
+    walk $\leftarrow$ $i$\;
+    \While{$\text{walk.left}\neq \texttt{null}$}{
+    walk $\leftarrow$ walk.left\; 
+    }
+    $R$ $\leftarrow$ walk\tcp*{$R$ is the root of the represented tree.}
+    Splay($R$)\;
+    \Return $R$\;
+\end{algorithm}
+
+The \texttt{MakeRoot}($i$) operation makes $i$ the root of its represented tree, which reverses
+the direction of the path from the root $R$ to $i$, as shown in Fig.~\ref{fig:makeRoot}. In terms of the auxiliary trees, 
+the operation is equivalent to flipping the auxiliary tree rooted at $i$ (after calling \texttt{Access}($i$)), because
+the depth of a node in the represented tree now becomes the graph distance to $i$ instead of the original root $R$,
+which means that the order of nodes in $i$'s auxiliary tree is reversed.
+\begin{figure}[h]
+  \centering
+  \vspace{5ex}
+  \includegraphics[width=0.8\columnwidth]{figures/diagram/MakeRoot.pdf}
+  \vspace{3ex}
+  \caption{The \texttt{MakeRoot}($f$) operation in the represented tree. The operation is done by making the path from $a$ to $f$ preferred and
+  reversing the direction of the path.}
+  \label{fig:makeRoot}
+\end{figure}
+
+The \texttt{link} operation takes two vertices $i$ and $j$ that belong to two different represented trees and connects them into one
+connected component. To simplify the implementation, it's convenient to make $i$ the root of its represented tree. Then we 
+access $i$ and $j$ to make them the root of their auxiliary trees. Note that $i$ now has no left subtree in its auxiliary representation,
+we therefore make $j$ the left child of $i$, which corresponds to making $i$ the child of $j$ in the represented tree. The pseudo-code for this process is shown
+in Algorithm~\ref{Algo:Link}.
+\begin{algorithm}
+\SetNoFillComment
+\caption{Link($i$,$j$)} \label{Algo:Link}
+    MakeRoot($i$)\;
+    Access($i$)\;
+    Access($j$)\;
+    $i$.left $\leftarrow$ $j$\;
+    parent($j$) $\leftarrow$ $i$\;
+\end{algorithm}
+
+Similar to the \texttt{link} operation, to cut the edge $\langle ij \rangle$ from the represented tree, it's convenient to make $i$ the root of its represented tree.
+As a result, after accessing $j$, we get an auxiliary tree (rooted at $j$) consisting of these two vertices. Then we simply set the parent of $i$ and
+the left child of $j$ to \texttt{null}, as described in Algorithm~\ref{Algo:Cut}.
+
+\begin{algorithm}[H]
+\SetNoFillComment
+\caption{Cut($i$,$j$)} \label{Algo:Cut}
+    MakeRoot($i$)\;
+    Access($j$)\;
+    parent($i$) $\leftarrow$ \texttt{null}\;
+    $j$.left $\leftarrow$ \texttt{null}\;
+\end{algorithm}

@@ -9,11 +9,11 @@ lattice $G$ with each edge of the forest (referred to as occupied edge) weighted
 \end{equation}
 where $|E_F|$ counts the number of edges in $F$. 
 
-The model is reminiscent of the famous model of bond percolation, where each bond is occupied independently with probability $p$ and do not need to form a forest.
+The model is reminiscent of the famous model of bond percolation, where each bond is occupied independently with probability $p$ and does not need to form a forest.
 In percolation, it's well known that for dimension $d \geq 2$, there exists a critical point $0 < p_c < 1$ such that there is a unique giant cluster whose size is of the order of the system volume
-at the supercritical phase $p > p_c$. In contrast, Roland et al. \cite{Roland2021Percolation} have shown that the percolation of spanning forests happens only for $d \geq 3$ 
+at the supercritical phase $p > p_c$. On the other hand, Roland et al. \cite{Roland2021Percolation} have shown that the percolation of spanning forests happens only for $d \geq 3$ 
 because of the geometrical constraint of the model. They also conjectured that the supercritical phase of the spanning-forest model is more interesting in terms of the scaling behaviors of non-giant clusters (trees). 
-The random spanning forests can also be viewed as special case of the $q$-state Potts model \cite{Potts1952, Wu1982}, another prototypical model in the study of phase transitions and critical phenomena.
+The random spanning forests can also be viewed as a special case of the $q$-state Potts model \cite{Potts1952, Wu1982}, another prototypical model in the study of phase transitions and critical phenomena.
 At first, the $q$-state Potts model was proposed to describe ferromagnets on a crystalline lattice, and $q$ correspondingly takes integer values.
 In 1972, a seminal work by Fortuin and Kasteleyn \cite{Fortuin1972} showed that the Potts model could be mapped to the random-cluster model, in which $q$ can be 
 generalized to real numbers. In particular, as illustrated in Chap.~\ref{chap:SPF}, by taking the limit of $q\to 0$ appropriately,
@@ -25,7 +25,7 @@ $\mathbb{R}^{1|2}$ ($\text{OSp}(1|2)$-invariant sigma model) to all orders in pe
 Later, Deng et al.\cite{Deng2007} presented Monte Carlo simulations of the model in spatial dimensions $d = 3, 4, 5$ and demonstrated that, for each case, there is a second-order phase transition at a finite weight
 $w_c$. They further conjectured that the upper critical dimension is $d=6$. Recently, the authors in Ref.~\inlinecite{Roland2021Hyperbolic} extended the results
 of Caracciolo et al. and reinterpreted the fermionic theory as a non-linear sigma model with hyperbolic target space $\mathbb{H}^{0|2}$, based on which
-they proved that there is no phase transition in two dimensions using a Mermin–Wagner argument. With this formulation, they further
+they proved that there is no phase transition in two dimensions using a Mermin–Wagner argument. With the formulation, they further
 obtained \cite{Roland2021Percolation} that a percolation transition is present for $d \geq 3$, consistent with the previous numerics. Despite these developments, there remain several aspects of
 the model worth exploring. In the thesis, we focus on the finite-size scaling behaviors of the non-giant clusters at the supercritical phase.
 It has been proved that \cite{Luczak1992,Martin2018} when $G$ is a complete graph ($d=\infty$) and the system is at the supercritical phase, there are an unbounded number of clusters with sizes of the order of $|V|^{2/3}$ apart from the macroscopic component,
@@ -33,15 +33,15 @@ where $|V|$ is the system size. Remarkably, the scale of clusters at criticality
 phase without the largest component looks like criticality. Our goal is to explore this phenomenon at finite dimensions, in particular $d=3$, using numerical methods.
 
 \section{Monte Carlo methods}\label{sec:MC_intro}
-We use Monte Carlo methods to study the spanning-forest model. This type of methods plays a very important role in statistical physics by
+We use Monte Carlo methods to study the spanning-forest model. This method plays a very important role in statistical physics by
 providing a way to extract statistical properties from high-dimensional configuration space. To be more specific, in statistical
-physics, we are usually interested in the ensemble average of various observables of system of equilibrium, which is governed by a probability distribution $\pi$ over the configuration space $\scrS$ of the system. 
+physics, we are usually interested in the ensemble average of various observables of the system of equilibrium, which is governed by a probability distribution $\pi$ over the configuration space $\scrS$ of the system. 
 For observable $F(x)$ (as a function of state $x$), its ensemble average is defined as
 \begin{equation}\label{eq:weighted_ave}
 	\langle F \rangle = \sum_{\mu \in \scrS} F(\mu) \pi_\mu.
 \end{equation}
 Typically, the state space $\scrS$ is exponentially large, which makes the computation of Eq.~\eqref{eq:weighted_ave} by enumerating all possible states impractical.
-Taking the Ising model as an example, for a system with total of $N$ spins, the total number of spin configurations grows exponentially as $2^N$.
+Taking the Ising model as an example, for a system with a total of $N$ spins, the total number of spin configurations grows exponentially as $2^N$.
 Unless there exists an analytic formula for $\langle F \rangle$, the computational resource required to compute $\langle F \rangle$ 
 using Eq.~\eqref{eq:weighted_ave} grows exponentially with $N$.
 
@@ -61,7 +61,7 @@ $P = \{p_{\mu\nu}\}_{\mu, \nu \in \scrS} = \{\mathbb{P}(X_{t+1} = \nu|X_{t} = \m
 	\item The Markov chain $\scrM$ is ergodic, i.e., there exists a positive integer $t_0$, such that for all paris $\mu, \nu\in \scrS$, 
 	$\mathbb{P}(X_t = \nu|X_0 = \mu) > 0$ for $t > t_0$.
 \end{enumerate}
-Condition (b) ensures that it's possible to sample any state in $\scrS$ in a Markov chain staring from arbitrary state.
+Condition (b) ensures that it's possible to sample any state in $\scrS$ in a Markov chain starting from an arbitrary state.
 One common way to obtain a transition probability $p_{\mu\nu}$ satisfying condition (a) is by further imposing the detailed balance condition
 \begin{equation}
 	\pi_{\mu} p_{\mu\nu} = \pi_{\nu} p_{\nu \mu}, \quad \forall \mu, \nu \in S, \mu \neq \nu.
@@ -71,8 +71,8 @@ The content we present above only gives a rough idea of the Monte Carlo methods.
 In Chap.~\ref{chap:Algo}, we will elaborate on a specific Monte Carlo algorithm for simulating the spanning forests.
 
 \section{Plan of the thesis}
-The thesis is organized as follows. In Chap.~\ref{chap:SPF}, we eclucidate the relation between the random spanning forests and
-Potts model and derive the corresponding fermionic representation. Thereafter we summarize the analytical results from Ref.~\inlinecite{Roland2021Hyperbolic,Roland2021Percolation}.
+The thesis is organized as follows. In Chap.~\ref{chap:SPF}, we elucidate the relation between the random spanning forests and
+the Potts model and derive the corresponding fermionic representation. Then we summarize the analytical results from Ref.~\inlinecite{Roland2021Hyperbolic,Roland2021Percolation}.
 The Monte Carlo algorithm and data structure implemented in this work is covered in Chap.~\ref{chap:Algo}. In Chap.~\ref{chap:results}, we analyze the simulation results, and a conclusion is given in Chap.~\ref{chap:conclusion}.
 
 

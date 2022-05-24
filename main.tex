@@ -12,9 +12,20 @@
 \input{ustcsetup.tex}
 \usepackage{enumitem}
 \usepackage{algorithm2e}
+\usepackage{caption}
+\usepackage{subcaption}
+\SetKwFor{While}{while}{}{end while}%
+\SetArgSty{textnormal}
+\usepackage{romannum}
+\usepackage{float}
+
+
 % \usepackage[noend]{algpseudocode}
 \newcommand\mycommfont[1]{\footnotesize\ttfamily{#1}}
 \SetCommentSty{mycommfont}
+\newcounter{casenum}
+\newenvironment{caseof}{\setcounter{casenum}{1}}{\vskip.5\baselineskip}
+\newcommand{\case}[2]{\vskip.5\baselineskip\par\noindent {\bfseries Case \arabic{casenum}:} #1\\#2\addtocounter{casenum}{1}}
 
 \newcommand{\scrZ}{{\mathcal Z}}
 \newcommand{\scrF}{{\mathcal F}}
@@ -23,6 +34,12 @@
 \newcommand{\scrH}{{\mathcal H}}
 \newcommand{\scrC}{{\mathcal C}}
 \newcommand{\scrT}{{\mathcal T}}
+\newcommand{\scrD}{{\mathcal D}}
+\newcommand{\scrN}{{\mathcal N}}
+\newcommand{\dof}{{d_{1\textrm{f}}}}
+\newcommand{\dtf}{{d_{2\textrm{f}}}}
+
+
 
 \newcommand{\p}{{\psi}}
 \newcommand{\G}{{\Gamma}}
@@ -58,7 +75,7 @@
 % \input{chapters/complementary.tex}
 
 % \backmatter
-% \input{chapters/acknowledgements.tex}
+\input{chapters/acknowledgements.tex}
 % \input{chapters/publications.tex}
 
 \end{document}

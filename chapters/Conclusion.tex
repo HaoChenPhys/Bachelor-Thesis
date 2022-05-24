@@ -1,1 +1,30 @@
 \chapter{Conclusion}\label{chap:conclusion}
+
+We studied the spanning-forest model using the Sweeny algorithm. To speed up the dynamical connectivity query 
+used in the algorithm, we implement an advanced data structure, the link-cut trees, which reduces the amortized time complexity
+for update and query to $O(\log V)$, where $V$ is the number of vertices in the underlying lattice. 
+
+We simulated the model on the complete graph and the cubic lattice with periodic boundary conditions in its supercritical phase. For the complete graph,
+we numerically confirmed that the fractal dimension of the non-giant clusters in the supercritical phase is $\frac{2}{3}$, identical to the fractal dimension at criticality. Furthermore, we found that, for a finite system with volume $V$, the configuration
+space of the spanning forests can be divided into two sectors, denoted as sectors~\Romannum{1} and \Romannum{2}. 
+Sector~\Romannum{1} is responsible for the model's scaling behaviors in the infinite-volume limit, in which 
+the fluctuations of the largest cluster $\scrC_1$ are $O(V^{2/3})$, and the second-largest cluster $\scrC_2$ scales as $V^{2/3}$. 
+Moreover, the cluster-size distribution (excluded $\scrC_1$) $n^\prime(s, V)$ in this sector has the same scaling form as the
+total cluster-size distribution $n(s, V)$ at criticality, which further demonstrates the critical properties of the supercritical phase.
+In contrast, sector~\Romannum{2} is a finite-size effect, which vanishes asymptotically as $V^{-1/2}$. In this sector, 
+cluster $\scrC_1$ has $O(V)$ fluctuations, and $\scrC_2$ is proportional to the system volume. For the cubic lattice, 
+we found that the non-giant clusters in the supercritical phase are still fractals, whose fractal dimension is estimated to be $2.30(3)$, 
+which is different from the fractal dimension $d_\text{f} = 2.5838(6)$ at the model's critical point. Similar to the complete graph, 
+we also found two distinct sectors in the configuration space for 3D. Sector \Romannum{1} dominates in the $L\to\infty$ limit,
+and both the fluctuations of $\scrC_1$ and the scale of $\scrC_2$ are described by fractal dimension $d_\text{f} = 2.30(3)$. Besides,
+the cluster-size distribution (excluded $\scrC_1$) $n^\prime(s, L)$ can be described by the critical scaling hypothesis $n^\prime(s, L) = s^{-\tau}\tilde{n}^\prime(s/L^{d_\text{f}})$
+with $\tau = 2.30$ and $d_\text{f} = 2.30$. Sector \Romannum{2}, instead, decays asymptotically as $L^{-0.75}$, and both the fluctuations of $\scrC_1$ and the scale of $\scrC_2$ in this sector
+are of the order of system volume.
+
+Finally, let's conclude with some future research directions. In the thesis, we have observed the critical behaviors of the spanning-forest model entailed in its supercritical phase in $d=3$, but
+the exponents that are used to characterize the scaling in the supercritical phase are different from the ones at the critical point. 
+It's natural to ask whether it is true in higher dimensions, in particular $d=4, 5$ since it has been conjectured in Ref.~\inlinecite{Deng2007} that the upper 
+critical dimension of the model is $d=6$. Another potential direction is to examine whether the supercritical phase of the spanning forests
+belongs to the universality class of the spanning-tree model, which is the $w\to \infty$ limit of the spanning forests. 
+Clarifying this question is important in understanding the renormalization flows in the model's phase diagram. Last but not the least,
+it would also be interesting to explore the geometric structures of the clusters in the supercritical phase.

@@ -581,7 +581,8 @@
     }%
     \def\bibname{Bibliography}%
     \def\appendixname{Appendix}%
-    \def\ustc@acknowledgements@name{Acknowledgements}%
+    % \def\ustc@acknowledgements@name{Acknowledgements}%
+    \def\ustc@acknowledgements@name{致谢}%
     \def\ustc@publication@name{Publications}%
     \def\ustc@notation@name{Notation}%
   \fi
