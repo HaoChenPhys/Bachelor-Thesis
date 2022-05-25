@@ -2,10 +2,10 @@
 
 \section{Phase transition}\label{sec:phase_transition}
 We first study the percolation transition of the spanning forests on the complete graph (CG) of finite volume $V$ and
-a three-dimensional cubic lattice with periodic boundary conditions. During the simulation, after every Monte Carlo sweep, we sample 
+a three-dimensional cubic lattice of linear size $L$ with periodic boundary conditions. During the simulation, after every Monte Carlo sweep, we sample 
 \begin{itemize}
 	\item the size of the largest component $\scrC_1$;
-	\item the graph diameter of the largest component $\scrD_1$;
+	% \item the graph diameter of the largest component $\scrD_1$;
 	\item the cluster size moments $\scrS_k = \sum_i (\scrC_i)^k$ for $k=2, 4$;
 	\item the cluster number $\scrN(s)$, defined as the number of clusters whose sizes are within $[s, s + \Delta s]$ 
 	with an appropriately chosen interval size $\Delta s$.
@@ -14,7 +14,7 @@ a three-dimensional cubic lattice with periodic boundary conditions. During the 
 and compute the following quantities:
 \begin{itemize}
 	\item the averaged size of the largest component: $C_1 = \langle \scrC_1 \rangle$;
-	\item the averaged graph diameter of the largest component: $D_1 = \langle \scrD_1 \rangle$;
+	% \item the averaged graph diameter of the largest component: $D_1 = \langle \scrD_1 \rangle$;
 	% \item the dimensionless ratio $Q_{\rm c1} = \langle \scrC_1^2 \rangle\big/\langle \scrC_1 \rangle^2$;
 	\item the dimensionless ratio\cite{Qian2005} $Q_S = \langle \scrS_2\rangle^2\big/\left(3\langle \scrS_2^2 \rangle - \langle \scrS_4\rangle\right)$;
 	\item the cluster-size distribution $n(s)= \frac{1}{V\Delta s} \langle \scrN(s)\rangle$.
@@ -26,17 +26,18 @@ and compute the following quantities:
 \end{itemize}
 
 The dimensionless quantity $Q_{S}$ is well suited for exploring the existence of a phase transition point.
-Its finite-size scaling behavior near the critical point $w_c$ (if exists) is $Q_{S}(w, L) = \tilde{Q}_{S}((w-w_c)L^{1/\nu})$,
-where $\tilde{Q}_{S}$ is a universal function and $L$ is the linear system size of the cubic lattice ($L$ is replaced by $V$ for CG). Therefore, one should find that curves of different system sizes intersect
+Its finite-size scaling behavior near the critical point $w_c$ (if exists) is $Q_{S}(w, L) = \tilde{Q}_{S}\left((w-w_c) L^{1/\nu}\right)$,
+where $\tilde{Q}_{S}$ is a universal function, and $L$ is replaced by $V$ in the above formula for the scaling behavior of $Q_S$ on the CG. 
+Therefore, one should find that curves of different system sizes intersect
 at $\left(w_c, \tilde{Q}_{S}(0)\right)$ if there exists a second-order phase transition. This is clearly observed for the spanning-forest model,
 as shown in Fig.~\ref{fig:wc}. The quantity in the thermodynamic limit tends to 1/3 in the subcritical phase and to 1 in the supercritical phase,
-in between a phase transition is presented at $\tilde{w}_c \equiv w_c V \approx 1$ for CG and at $w_c \approx 0.44$ for the cubic lattice,
+in between a phase transition is presented at $\tilde{w}_c \equiv w_c V \approx 1$ for the CG and at $w_c \approx 0.44$ for the cubic lattice,
 consistent with the previous results\cite{Luczak1992,Deng2007,Bedini2009,Roland2021Percolation}.
 
 \begin{figure}[t]
 	\centering
 	\includegraphics[width=0.85\columnwidth]{figures/Qs_wc.pdf}
-	\caption{The dimensionless quantity $Q_S$ versus the weight $w$ for (a) CG and (b) the cubic lattice. 
+	\caption{The dimensionless quantity $Q_S$ versus the weight $w$ for (a) the CG and (b) the cubic lattice. 
 	In Fig.~\ref{fig:wc}(a), we use $\tilde{w} = wV$ as the horizontal coordinate. An intersection is observed at $\tilde{w}_c \approx 1$. 
 	For the cubic lattice, an excellent intersection is observed at $w_c \approx 0.44$. }
 	\label{fig:wc}
@@ -44,13 +45,13 @@ consistent with the previous results\cite{Luczak1992,Deng2007,Bedini2009,Roland2
 
 One can further accurately estimate the phase transition point $w_c$ by applying finite-size analysis to the data, but because our focus is the 
 scaling behaviors of the clusters instead of determining $w_c$ with high-precision, we will use 
-the theoretical result by Bedini et al. \cite{Bedini2009}, which gives $\tilde{w}_c = 1$ for CG, and
-the numerical estimate by Deng et al.\cite{Deng2007}, which gives $w_c = 0.43365$ for 3D. We perform extensive simulations at these
-two critical points with system size up to $V = 2^{21}$ for CG and to $L=128$ for 3D and determine various critical exponents from the quantities described above. 
+the theoretical result by Bedini et al. \cite{Bedini2009}, which gives $\tilde{w}_c = 1$ for the CG, and
+the numerical estimate by Deng et al.\cite{Deng2007}, which gives $w_c = 0.43365$ for the cubic lattice. We perform extensive simulations at these
+two critical points with system size up to $V = 2^{21}$ for the CG and to $L=128$ for the cubic lattice and determine various critical exponents from the quantities described above. 
 
-\subsection{Complete Graph}
-In this section, we investigate the critical behaviors of the spanning-forest on CG.
-We first estimate the fractal dimension $d_{1 \textrm{f}}$ of the largest cluster at criticality on CG, which is defined as $C_1(w_c, V) \sim V^{d_{1\textrm{f}}}$.
+\subsection{Complete graph}
+In this section, we investigate the critical behaviors of the spanning-forest on the CG.
+We first estimate the fractal dimension $d_{1 \textrm{f}}$ of the largest cluster at criticality on the CG, which is defined as $C_1(w_c, V) \sim V^{d_{1\textrm{f}}}$.
 We perform the least-squares fits to $C_1$ with the following ansatz
 \begin{equation}\label{eq:C1_ansatz_CG}
     C(w_c, V) = V^{d_{\textrm{f}}}(a_0 + a_1V^{\omega_1} +a_2 V^{\omega_2}) + c_0,
@@ -68,7 +69,7 @@ prediction $\dof = \frac{2}{3}$.
 \begin{table}[tb]
 \centering
 \vspace{3ex}
-\caption{Fitting results of $\dof$ for the spanning forests on CG at $\tilde{w}_c = 1$ with ansatz Eq.~\eqref{eq:C1_ansatz_CG}.}
+\caption{Fitting results of $\dof$ for the spanning forests on the CG at $\tilde{w}_c = 1$ with ansatz Eq.~\eqref{eq:C1_ansatz_CG}.}
 \label{tab:C1_wc_CG} 
 \begin{tabular}{|lllllc|}
 \hline 
@@ -108,7 +109,7 @@ The good data collapse of different system sizes confirms the scaling form~\eqre
 	\vspace{3ex}
 	\centering
 	\includegraphics[width=0.85\columnwidth]{figures/ns_wc.pdf}
-	\caption{The log-log plot of the cluster-size distribution at criticality for (a) CG and (b) the cubic lattice. 
+	\caption{The log-log plot of the cluster-size distribution at criticality for (a) the CG and (b) the cubic lattice. 
 	The slopes of the black dashed lines in the two figures are $-5/2$ and $-2.161$, respectively. 
 	The insets show the scaled distribution $s^{\tau} n(s, V)$ ($s^{\tau} n(s, L)$) versus $s/V^{\dof}$ ($s\big/L^{\dof}$).}
 	\label{fig:ns_wc}
@@ -175,12 +176,11 @@ $L_{m}$   &$d_f$   &$a_0$   &$a_1$    & chi$^2/{\rm DF}$     \\
 % \end{table} 
 
 We then examine the cluster-size distribution $n(s, L)$ at $w_c$, which now can be written as $n(s, L) = s^{-\tau} \tilde{n}(s L^{-d_{1\textrm{f}}})$ with
-the Fisher exponent $\tau = 1 + 1/\dof$
-Figure.~\ref{fig:ns_wc}(b) shows the distribution on a log-log scale, where the exponent $2.616$ is obtained by plugging our estimate $\dof=2.5838(6)$
-into the relation $\tau = 1+1/\dof$. The excellent data collapse in the inset confirms both the correctness of our estimate of $\dof$ and the scaling form of $n(s, L)$.
+the Fisher exponent $\tau = 1 + d/\dof$. Figure.~\ref{fig:ns_wc}(b) shows the distribution for the cubic lattice on a log-log scale, where the exponent $2.616$ is obtained by plugging our estimate $\dof=2.5838(6)$
+into the relation $\tau = 1+d/\dof$. The excellent data collapse in the inset confirms both the correctness of our estimate of $\dof$ and the scaling form of $n(s, L)$.
 
 \section{Supercritical phase}
-In this section, we explore the critical behaviors of the spanning forests in its supercritical phase for both CG and the cubic lattice.
+In this section, we explore the critical behaviors of the spanning forests in its supercritical phase for both the CG and cubic lattice.
 Besides the quantities mentioned in Sec.~\ref{sec:phase_transition}, we further measure the size of the second-largest cluster $\scrC_2$ and 
 compute its average $C_2$.
 % \begin{itemize}
@@ -195,11 +195,11 @@ compute its average $C_2$.
 % \end{itemize}
 In addition, using our recorded samples, we generate the probability density functions for $\scrC_1$ and $\scrC_2$.
 
-\subsection{Complete Graph}
+\subsection{Complete graph}
 
 
-We simulate the model on CG at $\tilde{w}_1 = 2 > \tilde{w}_c$. As pointed out in Ref.~\inlinecite{Luczak1992,Martin2018}, apart from
-a macroscopic cluster of the scale $O(V)$, there are an unbounded number of clusters whose sizes are of the order $(V^{2/3})$ in the
+We simulate the model on the CG at $\tilde{w}_1 = 2 > \tilde{w}_c$. As pointed out in Ref.~\inlinecite{Luczak1992,Martin2018}, apart from
+a macroscopic cluster of the scale of $O(V)$, there are an unbounded number of clusters whose sizes are of the order of $V^{2/3}$ in the
 supercritical phase. To confirm the statement, we estimate the fractal dimension $\dtf$ of the second-largest cluster by fitting the data of $C_2$ using ansatz~\eqref{eq:C1_ansatz_CG}.
 We set $\omega_1 = -1/3$ and $\omega_2 = -1/2$ in the fit of $C_2$. The results are summarized in Table~\ref{tab:C2_w1_COM}, and we obtain $\dtf = 0.660(6)$, 
 consistent with the prediction $2/3$. Figure.~\ref{fig:C1_C2_CG} plots the cluster sizes $C_1(\tilde{w}_c, V)$ and $C_2(\tilde{w}_1, V)$ versus the system volume
@@ -210,15 +210,15 @@ can be fit by the power-law behavior with exponent $\frac{2}{3}$.
 	\centering
 	\vspace{3ex}
 	\includegraphics[width=0.5\columnwidth]{figures/C1_C2_CG.pdf}
-	\caption{The scaling behaviors of $C_1(\tilde{w}_c, V)$ and $C_2(\tilde{w}_1, V)$ on CG, plotted on a log-log scale. The dashed line 
+	\caption{The scaling behaviors of $C_1(\tilde{w}_c, V)$ and $C_2(\tilde{w}_1, V)$ on the CG, plotted on a log-log scale. The dashed line 
 	represents $C = a_0 V^{d_{\text{f}}}$ with $d_\text{f} = 2/3$.}
 	\label{fig:C1_C2_CG}
 \end{figure}
 
-\begin{table}[htb]
+\begin{table}[tb]
 \centering
 \vspace{3ex}
-\caption{Fitting results of $\dtf$ for the spanning forests on CG at $\tilde{w}_1 = 2$ with ansatz Eq.~\eqref{eq:C1_ansatz_CG}.}
+\caption{Fitting results of $\dtf$ for the spanning forests on the CG at $\tilde{w}_1 = 2$ with ansatz Eq.~\eqref{eq:C1_ansatz_CG}.}
 \label{tab:C2_w1_COM} 
 \begin{tabular}{|llllllc|}
 \hline 
@@ -254,17 +254,17 @@ $24^3$    &0.661(5)     &0.80(7)    &0(2)        &-6(5)       &\multicolumn{1}{c
 To characterize the behaviors of $\scrC_1$ and $\scrC_2$ more precisely, we plot the probability density functions
 of variables $X_1 \equiv \frac{\scrC_1 - C_1}{V^{2/3}}$ and $X_2 \equiv \frac{\scrC_2}{V^{2/3}}$ for various system sizes using a semi-log scale,
 as shown in Fig.~\ref{fig:prob_w1_CG}. For the variable $X_1$, we find that the data collapse to a single curve when $X_1$ is approximately larger
-than -2. In this region, the fluctuations of $\scrC_1$ are of the order of $O(V^{2/3})$, in agreement with the result for the infinite-volume limit from Ref.~\inlinecite{Luczak1992}.
+than -2. In this region, the fluctuations of $\scrC_1$ are of the order of $V^{2/3}$, in agreement with the result for the infinite-volume limit from Ref.~\inlinecite{Luczak1992}.
 However, for finite systems, there exists a region with a vanishing probability in which the data fail to collapse. Instead, a preliminary plot of the 
 probability density function $f_{X_1^\prime}(x)$ multiplied by $V^{1/2}$ for the variable $X_1^\prime = \frac{\scrC_1 - C_1}{V}$ exhibits a good data collapse for this region, 
 as illustrated in Fig.~\ref{fig:prob_w1_CG_tail}(a). This implies that there exists a sector in the configuration space of the spanning forests which vanishes
-asymptotically as $V^{-1/2}$, and the fluctuations of $\scrC_1$ in this sector are of the order of $O(V)$. 
+asymptotically as $O(V^{-1/2})$, and the fluctuations of $\scrC_1$ in this sector are of the order of $V$. 
 For the second-largest cluster size $\scrC_2$, we also observe a similar phenomenon, as shown in Fig~\ref{fig:prob_w1_CG}(b) 
 and Fig.~\ref{fig:prob_w1_CG_tail}(b), where $X_2^\prime$ is defined by $X_2^\prime = \frac{\scrC_2 - C_2}{V}$. 
 Therefore, for a CG with finite volume $V$, there seems to exist two sectors in the configuration space of the spanning forests at the supercritical phase, which exhibit different finite-size scaling behaviors. 
-Sector~\Romannum{1} is responsible for the critical behaviors of the model in the infinite-volume limit, in which $\scrC_2$ scales as $V^{2/3}$ and the fluctuations of 
-$\scrC_1$ are of the order of $O(V^{2/3})$. On the other hand, sector~\Romannum{2} decays asymptotically with a rate $V^{-1/2}$, in which $\scrC_2$ scales
-as $V$ and the fluctuations of $\scrC_1$ are of the order of $O(V)$.
+Sector~\Romannum{1} is responsible for the critical behaviors of the model in the infinite-volume limit, in which $\scrC_2$ scales as $O(V^{2/3})$ and the fluctuations of 
+$\scrC_1$ are of the order of $V^{2/3}$. On the other hand, sector~\Romannum{2} decays asymptotically with a rate $V^{-1/2}$, in which $\scrC_2$ scales
+as $O(V)$ and the fluctuations of $\scrC_1$ are of the order of $V$.
 
 \begin{figure}[htb]
 	\centering
@@ -276,7 +276,7 @@ as $V$ and the fluctuations of $\scrC_1$ are of the order of $O(V)$.
 
 We further study the cluster-size distribution in the two sectors. To suppress the finite-size corrections brought by
 the crossover region between the two sectors, which is irrelevant in demonstrating the physics, we sample quantities conditioned on 
-$\scrC_1 - C_1 > 0$ for the sector~\Romannum{1}, and sample quantities conditioned on $\scrC_1 - C_1 < -0.05V$ for the sector~\Romannum{2}.
+$\scrC_1 - C_1 > 0$ for sector~\Romannum{1}, and sample quantities conditioned on $\scrC_1 - C_1 < -0.05V$ for sector~\Romannum{2}.
 Since we are interested in the non-giant clusters, we exclude $\scrC_1$ during the measurement and denote the resulting
 cluster-size distribution as $n^\prime(s, V)$. Figure~\ref{fig:nsp_w1_CG} shows the distribution $n^\prime(s, V)$ for the two sectors on a log-log scale.
 For sector~\Romannum{1}, we find that $n^{\prime}(s, V)\sim s^{-5/2}$ in the bulk region, and the distribution is well described by the formula $n^\prime(s, V) = s^{-5/2} \tilde{n}^\prime(s/V^{2/3})$, 
@@ -284,10 +284,10 @@ which is the same scaling form of $n(s, V)$ at criticality. For sector~\Romannum
 region. Moreover, there is another power-law behavior (indicated by the blue dashed line in Fig.~\ref{fig:nsp_w1_CG}(b)) with exponent $-2$.
 This is probably due to the effect of $\scrC_2$ since its fractal dimension in sector~\Romannum{2} is $1$, which gives the Fisher exponent $\tau = 2$.
 
-\begin{figure}[tb]
+\begin{figure}[b]
 	\centering
 	\includegraphics[width=0.85\columnwidth]{figures/nsp_w1_CG.pdf}
-	\caption{The log-log plot of the cluster-size distribution $n^\prime(s, V)$ on CG sampled in (a) sector~\Romannum{1} and (b) sector~\Romannum{2}. The insets show
+	\caption{The log-log plot of the cluster-size distribution $n^\prime(s, V)$ on the CG sampled in (a) sector~\Romannum{1} and (b) sector~\Romannum{2}. The insets show
 	the scaled distribution $s^\tau n(s, V)$ versus $s/V^{d_f}$, where the values of $\tau$ and $d_\text{f}$ are indicated in the legends.}
 	\label{fig:nsp_w1_CG}
 \end{figure}
@@ -306,9 +306,9 @@ as shown in Fig.~\ref{fig:C1_C2_3D}, where we plot $C_1(w_c, L)$ and $C_2(w_1, L
 \label{tab:C2_w1_3D} 
 \begin{tabular}{|llllllc|}
 \hline 
-$L_{\rm min}$   &\multicolumn{1}{c}{$\dtf$}   &\multicolumn{1}{c}{$a_0$}    
+$L_{m}$   &\multicolumn{1}{c}{$\dtf$}   &\multicolumn{1}{c}{$a_0$}    
 &\multicolumn{1}{c}{$a_1$}  &\multicolumn{1}{c}{$a_2$} &\multicolumn{1}{c}{$c_0$}
-& $\chi^2/{\rm DF}$     \\
+& chi$^2/{\rm DF}$     \\
 \hline 
 % 32    &2.303(3)     &0.474(8)   &-1.3(1)    &\multicolumn{1}{c}{-} &\multicolumn{1}{c}{-} &5.2/5\\ 
 48    &2.294(8)     &0.50(2)    &-1.7(3)    &\multicolumn{1}{c}{-} &\multicolumn{1}{c}{-} &3.7/4\\ 
@@ -327,7 +327,8 @@ $L_{\rm min}$   &\multicolumn{1}{c}{$\dtf$}   &\multicolumn{1}{c}{$a_0$}
 \vspace{3ex}
 \end{table} 
 
-\begin{figure}[t]
+\begin{figure}[b]
+	\vspace{3ex}
 	\centering
 	\includegraphics[width=0.5\columnwidth]{figures/C1_C2_3D.pdf}
 	\caption{The scaling behaviors of $C_1(w_c, L)$ and $C_2(w_1, L)$ on the cubic lattice, plotted on a log-log scale. The dashed lines
@@ -336,7 +337,7 @@ $L_{\rm min}$   &\multicolumn{1}{c}{$\dtf$}   &\multicolumn{1}{c}{$a_0$}
 \end{figure}
 
 
-\begin{figure}[b]
+\begin{figure}[t]
 	\vspace{3ex}
 	\centering
 	\includegraphics[width=0.85\columnwidth]{figures/Prob_w2_3D.pdf}
@@ -348,27 +349,27 @@ $L_{\rm min}$   &\multicolumn{1}{c}{$\dtf$}   &\multicolumn{1}{c}{$a_0$}
 
 We then study the probability distribution of $\scrC_1$ and $\scrC_2$. Figure~\ref{fig:prob_w2_3D} shows the probability density 
 functions of variables $X_1 \equiv \frac{\scrC_1 - C_1}{L^{2.3}}$ and $X_2 \equiv \frac{\scrC_2}{L^{2.3}}$ for various system sizes. 
-Similar to the case of CG, the data exhibit good collapse only for a partial region, which corresponds to the sector in which
-the fluctuations of $\scrC_1$ are of the scale $O(L^{2.3})$ and $C_2 \sim L^{2.3}$. The failure of collapsing the whole curve
+Similar to the case of the CG, the data exhibit good collapse only for a partial region, which corresponds to the sector in which
+the fluctuations of $\scrC_1$ are of the scale of $O(L^{2.3})$ and $C_2 \sim L^{2.3}$. The failure of collapsing the whole curve
 of $f_{X_1}(x_1)$ and $f_{X_2}(x_2)$ implies that there is another sector with distinct critical behaviors.
 The conjecture is confirmed by Fig.~\ref{fig:prob_w2_3D_tail}, where we define $X_1^\prime \equiv \frac{\scrC_1 - C_1}{L^3}$ and $X_2^\prime \equiv \frac{\scrC_2 - C_2}{L^3}$.
-A good data collapse is observed for $L^{0.75}f_{X_1^\prime}(x)$ and $L^{0.75}f_{X_1^\prime}(x)$ in the region where the former sector fails to collapse.
-Therefore, the sector vanishes asymptotically as $L^{-0.75}$. In contrast to the former sector, the largest cluster in this sector has $O(L^3)$ fluctuations.
+A good data collapse is observed for $L^{0.75}f_{X_1^\prime}(x)$ and $L^{0.75}f_{X_2^\prime}(x)$ in the region where the former sector fails to collapse.
+Therefore, this sector vanishes asymptotically as $O(L^{-0.75})$. In contrast to the former sector, the largest cluster in this sector has $O(L^3)$ fluctuations.
 For convenience, we denote the two sectors as sector~\Romannum{1} and sector~\Romannum{2}.
 
 
-\begin{figure}[t]
+\begin{figure}[h]
 	\vspace{3ex}
 	\centering
 	\includegraphics[width=0.85\columnwidth]{figures/Prob_tail_w2_3D.pdf}
-	\caption{The semi-log plot of the probability density functions $f_{X_1^\prime}(x)$ and $f_{X_2^\prime}(x)$ for various system sizes, 
+	\caption{The semi-log plot of the probability density functions $f_{X_1^\prime}(x)$ and $f_{X_2^\prime}(x)$ multiplied by $L^{0.75}$, 
 	where $X_1^\prime \equiv (\scrC_1 - C_1)/L^{3}$ and $X_2^\prime \equiv (\scrC_2 - C_2)/L^{3}$.}
 	\label{fig:prob_w2_3D_tail}
 	\vspace{3ex}
 \end{figure}
 
 We further study the cluster-size distribution $n^\prime(s, L)$ of the non-giant clusters in the two sectors. To avoid finite-size corrections
-as much as possible, we make measurements for the sector~\Romannum{1} only when $\scrC_1 - C_1 > 0$ and for the sector~\Romannum{2} only when $\scrC_1 - C_1 < -0.1V$.
+as much as possible, we make measurements for sector~\Romannum{1} only when $\scrC_1 - C_1 > 0$ and for sector~\Romannum{2} only when $\scrC_1 - C_1 < -0.1V$.
 The results are shown in Fig.~\ref{fig:nsp_w2_3D}. For sector~\Romannum{1}, a power-law behavior $n^\prime(s, L) \sim s^{-\tau}$ is observed
 for $s \ll L^{\dtf}$ in Fig.~\ref{fig:nsp_w2_3D}(a), and the Fisher exponent $\tau = 2.30$ is consistent with the one obtained via the formula $1+d/\dtf$ using our estimate $\dtf=2.30(3)$.
 Moreover, the inset in Fig.~\ref{fig:nsp_w2_3D}(a) suggests that the distribution can be written as $n^\prime(s, L) = s^{-\tau}\tilde{n}^\prime(s/L^{\dtf})$,
